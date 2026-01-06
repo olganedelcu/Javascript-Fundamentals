@@ -1,0 +1,94 @@
+# 👨‍💻 welcome, fellow software engineer!
+
+this is your **software engineering interviews knowledge dump** — a friendly, no-bs place to refresh your brain before hopping into any technical interview.
+
+## ✨ what this is
+
+a clean and simple guide to help you revise **javascript**, **typescript**, and modern frontend/backend fundamentals - from the **basics** to the more **advanced** topics.
+
+you’ll find bite-sized explanations, easy examples, and interview-style questions. no fluff. no overwhelm. just practical stuff.
+
+---
+
+## 📚 what's inside?
+
+> everything you need to not freak out before the technical round.
+
+### ✅ javascript + typescript fundamentals
+- var vs let vs const
+- scope, hoisting, closures
+- types, interfaces, generics
+- objects, arrays, maps, sets
+- classes, inheritance, `this`
+- common gotchas & tricks
+
+### ✅ async & promises
+- `async/await` explained simply
+- how `promises` actually work
+- promise chaining, error handling
+- `fetch`, `axios`, and api handling
+
+### ✅ npm & dependencies
+- what is npm?
+- how `package.json` works
+- installing, updating, removing packages
+- devDependencies vs dependencies
+
+### ✅ local storage, session storage, cookies
+- when to use each one
+- differences in lifespan & scope
+- practical code examples
+
+### ✅ react improvement
+- common performance optimizations
+- useEffect / useMemo / useCallback breakdown
+- state management patterns
+- code splitting & lazy loading
+
+### ✅ design patterns (js/ts)
+- singleton, factory, observer, strategy
+- why they matter in interviews
+- code examples & use cases
+
+### ✅ debugging frontend
+- chrome devtools magic
+- breakpoints, call stack, network tab
+- real debugging workflow examples
+
+---
+
+## 💡 how to use this
+
+1. skim the topic list
+2. click into any `.md` file you wanna revise
+3. go through examples, notes, and potential Qs
+4. relax. God’s got you. 🙏
+
+---
+
+## 🧠 coming soon…
+
+- system design basics
+- frontend architecture tips
+- sample take-home projects
+- mock interview Q&A dumps
+
+---
+
+## 🆓 it’s free. always.
+
+this is built to help anyone who's:
+- prepping for a job or internship
+- feeling rusty after a break
+- looking for a quick refresh without all the fluff
+
+---
+
+## ✍️ contribute?
+
+found something helpful? made a fix? open a PR or issue. let’s make this better together.
+
+---
+
+> “commit your work to the Lord, and your plans will be established.” — proverbs 16:3
+
