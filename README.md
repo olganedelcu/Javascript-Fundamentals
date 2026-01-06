@@ -1,4 +1,4 @@
-# 👨‍💻 welcome, fellow software engineer!
+# 🧙‍♀️ welcome, fellow software engineer!
 
 this is your **software engineering interviews knowledge dump** — a friendly, no-bs place to refresh your brain before hopping into any technical interview.
 
@@ -75,7 +75,7 @@ you’ll find bite-sized explanations, easy examples, and interview-style questi
 
 ---
 
-## 🆓 it’s free. always.
+## who is this for?
 
 this is built to help anyone who's:
 - prepping for a job or internship
@@ -90,5 +90,5 @@ found something helpful? made a fix? open a PR or issue. let’s make this bette
 
 ---
 
-> “commit your work to the Lord, and your plans will be established.” — proverbs 16:3
+> “Commit your work to the Lord, and your plans will be established.” - Proverbs 16:3
 
