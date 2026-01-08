@@ -15,6 +15,18 @@ const b = 1; // cannot reassign
 - hoisting = var + functions get "lifted" to top
 - closures = inner function "remember" outer variables
 
+#### 🧙‍♀️ Hoisting in JavaScript
+##### definition
+hoising is when JS "remembers" all your variables & function declarations **before** it actually runs the code.
+
+###### memory allocation phase: 
+- all **var**, **function**, and **class** declarations are stored in memory. 
+- JS does this automatically, **before** executing line-by-line.
+
+###### key insights: 
+
+
+
 ## 📐 types, interfaces, generics (typescript)
 
 ## 📦 objects, arrays, maps, sets
