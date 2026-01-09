@@ -24,7 +24,9 @@ hoising is when JS "remembers" all your variables & function declarations **befo
 - JS does this automatically, **before** executing line-by-line.
 
 ###### key insights: 
-
+- only declarations are hoisted -  not initializations
+- **let** and **const** are hoisted too, but not accessible before declaration
+- function declaration are hoisted fully, function expressions are not.
 
 
 ## 📐 types, interfaces, generics (typescript)
