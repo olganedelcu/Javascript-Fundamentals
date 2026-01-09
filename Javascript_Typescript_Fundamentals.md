@@ -28,6 +28,21 @@ hoising is when JS "remembers" all your variables & function declarations **befo
 - **let** and **const** are hoisted too, but not accessible before declaration
 - function declaration are hoisted fully, function expressions are not.
 
+## 🧳 Closures
+a **closure** is when an inner function remembers the variables from its outer function, even after the outer function has finished running.
+```js
+function outer() {
+    let count = 0;
+    return function inner() {
+        count++;
+        console.log(count);
+    };
+}
+
+const inc = outer();
+inc();
+inc();
+```
 
 ## 📐 types, interfaces, generics (typescript)
 
