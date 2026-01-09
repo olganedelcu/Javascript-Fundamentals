@@ -43,11 +43,74 @@ const inc = outer();
 inc();
 inc();
 ```
+- used for data privacy, stateful functions, and async logic.
 
 ## 📐 types, interfaces, generics (typescript)
 
-## 📦 objects, arrays, maps, sets
+### 🧩 types
+```ts
+let age: number = 25;
+let name: string = Olga;
+let isAdmin: boolean = true;
+```
+### 🧷 Interfaces
+```ts
+interface User {
+    id: number;
+    name: string;
+}
 
+const user: User = {id: 1; name: "Olga" };
+```
+
+### 🎁 Generics
+```ts
+function wrapInArray<T>(value: T): T[] {
+    return [value];
+}
+
+const nums = wrapInArray<number>(5); // [5]
+```
+
+## 📦 objects, arrays, maps, sets
+### Objects
+- Key-value pairs
+```js
+const user = { name: "Alex", age: 22};
+```
+### Arrays
+- Ordered collections
+```js
+const nunbers = [1, 2, 3];
+```
+### Maps
+- Key-value with any type keys
+```js
+const maps = new Map();
+map.set("a", 1);
+```
+### Sets
+- Unique values only
+```js
+const set = new Set([1, 2, 2, 3]) // {1, 2, 3}
+```
 ## 🏛️ classes, inheritance, this
+```ts
+class Animal {
+    constructor(public name: string) {
+        speak() {
+            console.log(`${this.name} makes a sound`);
+        }
+    }
+
+    class Dog extends Animal {
+        speak();
+        console.log(`${this.name} barks`)
+    }
+}
+
+const d = new Dog("Rex");
+d.speak(); // Rex barks
+```
 
 ## common gotchas & tricks
