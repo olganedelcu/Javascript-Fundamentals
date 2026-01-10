@@ -73,3 +73,11 @@ async function getData() {
     }
 }
 ```
+
+#### what does Async functions return and why?
+async await is a **syntax sugar** for **promises** and whenever you write async in front of a function, it will basically **wrap** **that code in a promise** and return a promise that will **resolve** with the return of that function. So whenever you have an async function, that function will return a promise that will end up resolving with whatever the return of that function is.
+example:
+
+```js
+
+```
