@@ -112,3 +112,16 @@ function Characters() {
 export default Characters;
 
 ```
+
+### What is a pure function and when do we use it?
+A pure function is very useful when using **functional programming**. Why? Because it really **does not modify anything else** — it has **no side effects**. 🌱
+
+You really just **give it an input**, and it gives you an **output**, and there is no other change to:
+
+- any global state of the system 🌐,
+- or any **calls** outside the system (like APIs, localStorage, DBs, etc.)
+
+This is extremely good because they are very **deterministic** ✅ — so you always know:
+- given an input → you always get the same output.
+
+they're commonly used in **functional programming** and in most J**avaScript codebases**, because it makes things simpler, more predictable, and easier to **test**.
