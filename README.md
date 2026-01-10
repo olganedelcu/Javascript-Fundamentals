@@ -14,46 +14,61 @@ you’ll find bite-sized explanations, easy examples, and interview-style questi
 
 > everything you need to not freak out before the technical round.
 
-### ✅ javascript + typescript fundamentals
+### 🧠 [javascript primitives](Javascript_Primitives.md)
+- all 7 primitive data types (string, number, boolean, undefined, null, bigint, symbol)
+- immutability & pass-by-value behavior
+- primitive vs object comparison
+- type coercion & truthiness
+- practical real-world examples
+
+### ⏳ [javascript + typescript fundamentals](Javascript_Typescript_Fundamentals.md)
 - var vs let vs const
-- scope, hoisting, closures
+- scope, hoisting, closures (with memory insights)
 - types, interfaces, generics
 - objects, arrays, maps, sets
-- classes, inheritance, `this`
+- classes, inheritance, `this` keyword
 - common gotchas & tricks
 
-### ✅ async & promises
+### ⚡ [async & promises](Javascript_Async.md)
+- is javascript synchronous? (yes!)
+- callbacks & callback hell
+- how promises actually work (pending, fulfilled, rejected)
 - `async/await` explained simply
-- how `promises` actually work
-- promise chaining, error handling
-- `fetch`, `axios`, and api handling
+- pure functions & functional programming
+- real react example with useEffect
 
-### ✅ npm & dependencies
+### 📦 [npm & dependencies](NPM_Dependences.md)
 - what is npm?
-- how `package.json` works
-- installing, updating, removing packages
-- devDependencies vs dependencies
+- how `package.json` and `package-lock.json` work
+- dependencies vs devDependencies
+- common npm commands (install, run, build, audit)
+- why we need dependencies
+- what happens when you `npm run build`
 
-### ✅ local storage, session storage, cookies
-- when to use each one
-- differences in lifespan & scope
-- practical code examples
-
-### ✅ react improvement
-- common performance optimizations
-- useEffect / useMemo / useCallback breakdown
-- state management patterns
+### 🚀 [performance optimization](Performance.md)
+- cookies vs local storage vs session storage (when to use each)
+- polyfilling code for backward compatibility
+- bundle compression (gzip/brotli)
+- uglification & minification
 - code splitting & lazy loading
+- tree shaking & dependency graphs
+- image & asset optimization (WebP, lazy loading, CDN)
+- code quality tools (linters, prettier, eslint, lighthouse, sentry)
+- xss attacks & frontend security
+- micro-frontends architecture (when to use & trade-offs)
+- css-in-js pros & cons
 
-### ✅ design patterns (js/ts)
-- singleton, factory, observer, strategy
-- why they matter in interviews
-- code examples & use cases
+### 🔷 [typescript deep dive](TS.md)
+- generic functions in typescript
+- `as const` vs normal const (deep immutability)
+- type vs interface (when to use each)
+- type guards & union types
+- practical typescript patterns
 
-### ✅ debugging frontend
-- chrome devtools magic
-- breakpoints, call stack, network tab
-- real debugging workflow examples
+### ⚙️ [debouncing](debouncing.md)
+- what is debouncing & why use it
+- preventing unnecessary api calls
+- real-world use cases (search bars, resize events, form validation)
 
 ---
 
@@ -63,15 +78,6 @@ you’ll find bite-sized explanations, easy examples, and interview-style questi
 2. click into any `.md` file you wanna revise
 3. go through examples, notes, and potential Qs
 4. relax. God’s got you. 🙏
-
----
-
-## 🧠 coming soon…
-
-- system design basics
-- frontend architecture tips
-- sample take-home projects
-- mock interview Q&A dumps
 
 ---
 
