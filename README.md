@@ -14,14 +14,14 @@ you’ll find bite-sized explanations, easy examples, and interview-style questi
 
 > everything you need to not freak out before the technical round.
 
-### 🧠 [javascript primitives](Javascript_Primitives.md)
+### 🧠 [javascript primitives](javascript-primitives.md)
 - all 7 primitive data types (string, number, boolean, undefined, null, bigint, symbol)
 - immutability & pass-by-value behavior
 - primitive vs object comparison
 - type coercion & truthiness
 - practical real-world examples
 
-### ⏳ [javascript + typescript fundamentals](Javascript_Typescript_Fundamentals.md)
+### ⏳ [javascript + typescript fundamentals](javascript-fundamentals.md)
 - var vs let vs const
 - scope, hoisting, closures (with memory insights)
 - types, interfaces, generics
@@ -29,7 +29,7 @@ you’ll find bite-sized explanations, easy examples, and interview-style questi
 - classes, inheritance, `this` keyword
 - common gotchas & tricks
 
-### ⚡ [async & promises](Javascript_Async.md)
+### ⚡ [async & promises](async-promises.md)
 - is javascript synchronous? (yes!)
 - callbacks & callback hell
 - how promises actually work (pending, fulfilled, rejected)
@@ -37,7 +37,7 @@ you’ll find bite-sized explanations, easy examples, and interview-style questi
 - pure functions & functional programming
 - real react example with useEffect
 
-### 📦 [npm & dependencies](NPM_Dependences.md)
+### 📦 [npm & dependencies](npm-dependencies.md)
 - what is npm?
 - how `package.json` and `package-lock.json` work
 - dependencies vs devDependencies
@@ -45,7 +45,7 @@ you’ll find bite-sized explanations, easy examples, and interview-style questi
 - why we need dependencies
 - what happens when you `npm run build`
 
-### 🚀 [performance optimization](Performance.md)
+### 🚀 [frontend performance optimization](frontend-performance.md)
 - cookies vs local storage vs session storage (when to use each)
 - polyfilling code for backward compatibility
 - bundle compression (gzip/brotli)
@@ -58,7 +58,7 @@ you’ll find bite-sized explanations, easy examples, and interview-style questi
 - micro-frontends architecture (when to use & trade-offs)
 - css-in-js pros & cons
 
-### 🔷 [typescript deep dive](TS.md)
+### 🔷 [typescript advanced concepts](typescript-advanced.md)
 - generic functions in typescript
 - `as const` vs normal const (deep immutability)
 - type vs interface (when to use each)
