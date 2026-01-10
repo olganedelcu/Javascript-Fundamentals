@@ -139,15 +139,96 @@ Webpack builds a **dependency graph** by analyzing your `import` statements star
 
 This ensures optimal bundling and helps during code splitting and tree shaking.
 
+---
+
+### CSS and JS is?
+used together for building frontend.
+CSS handles styles, JS handles interactivity.
+
+#### use cases.
+- css-in-js = dynamic styles.
+c- ss styles when certain state changes (like when clicking a button).
+- you could do it with classes, but it's faster and more powerful with css-in-js.
+- you write css inside js files, and then tools like webpack inject them into the html DOM at runtime.
+- this lets you do dynamic styling — styles based on props, themes, component state.
+
+#### disadvantages.
+- because styles are in js files,
+you can’t extract them into static css files.
+- so they are not cacheable.
+- the browser can’t store them between visits.
+- user has to re-download them every time.
+also makes styles harder to debug,
+- because they’re injected dynamically, class names are hashed,
+and don’t show clear line numbers like regular .css files.
+
+
 ### ⚙️ 6. Image & Asset Optimization
-- I always optimize images by:
+##### Frontend apps with very huge images, how would we optimize for performance?
+- Dimensions matter: 
 - Resizing to only what's needed
 - Using **WebP** over PNG/JPEG
-- Stripping metadata
-- Compressing with tools like `imagemin`
-- Hosting on **CDN** with caching headers
-- Enable **lazy loading** (`loading="lazy"`) for offscreen images.
-- Use `srcSet` for responsive images — smaller images for mobile, larger for desktop.
-- Always define `width` and `height` to prevent layout shifts.
+- Stripping metadata: once we have the dimensions, we look into compression and image optimization toools that can remove metadata from the image or modify what they call the color space to include less colors. The image looks a bit less vibrant but it contains less data so its smaller.
+- Hosting on **CDN** with caching headers and have direct caching polices.
+- Enable **lazy loading** (`loading="lazy"`) for offscreen images, load on scroll - load images as user scrolls.
+- Use `srcSet` attribute to ship different images depending on the viewport on devide. Modern CDNs makes it by default.
+- Specify `width` and `height` to pnot have accumulative layer shift.
 
 ---
+
+## Performance challenges in frontend 
+### How do you manage code quality in a large scale frontend application? What tools and practices do you use?
+
+🧹 for code quality, i would probably start with a **linter**, so you want to basically catch small issues and make sure everybody writes the same code.
+🎨 you’re gonna have **prettier**, maybe **eslint** set up, and if you're using typescript, have the **tslint** set up.
+🧠 this takes off a lot of work and communication because everybody writes code in the same style.
+
+🧪 after that, you do want to have a layer of unit tests, and ideally some **E2E** tests for sure.
+🔍 and finally, i would have something like a dependency scan.
+
+-  in the linter, have something that scans for **a11y**, which stands for accessibility.
+
+🧰 so now we’re taking care of **code quality**, **style**, **accessibility**, **testing**, and **dependencies** (since node modules especially can be vulnerable to different attacks).
+
+📊 finally, have something like **lighthouse** or **sentry** in your pipeline —
+📈 they tell you how your **core web vitals** change and how web performance changes over time.
+⚠️ so if we make any mistake, like adding a big image or extra fonts, we **immediately see the effect** and fix it early on.
+
+### ❓ what is an xss attack and how do you make sure that frontend apps are not vulnerable to those attacks?
+
+💥 xss = cross-site scripting.
+👾 the attacker persists some javascript code in our database.
+🌐 then users, because they fetch from our database, end up running that code in their browser.
+
+### ❓ what are micro-frontends? when would you use frontend architecture?
+🧩 in a frontend, we usually have different components — header, body of the page, checkout info, etc.
+👥 this works pretty fine when we’re in small teams, but as we **scale**, it becomes really hard to contribute to a **single frontend monolith**.
+
+⚙️ so what we can do is split those individual parts into different applications.
+🧱 and then we have a **shell** — kind of like a container — that puts them all together.
+🔐 this shell can be responsible for things like **authentication**, and **shared state**.
+
+🚀 now we can deploy the **different apps independently**,
+so it allows us to **separate** development teams,
+and make development much faster and more modular.
+
+⚠️ BUT you pay t**he price of complexity** —
+you need more complex tooling to make something like this happen (routing, shared packages, auth sync, etc).
+
+#### 🧠 when does it make sense?
+🧱 when we already have a big monolithic app,
+and we’re thinking of **breaking it into micro-frontends**.
+
+👥 micro-frontends are mostly good when **splitting** organisations.
+you need to split people into teams that can work **independently**.
+
+🔗 but because we’re distributing our system,
+you always pay the price for that — especially things like:
+
+🤯 sharing state
+🧪 integration testing
+🔀 coordination between teams
+✅ so when we need technology to **enable parallel work without cross-dependencies**, micro-frontends can help.
+
+🚫 but if you’re building smaller websites or simple apps, there’s no real reason to overcomplicate —
+just stick with a regular monolithic frontend setup.
