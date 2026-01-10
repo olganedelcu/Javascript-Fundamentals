@@ -113,4 +113,13 @@ const d = new Dog("Rex");
 d.speak(); // Rex barks
 ```
 
+**this** keyword
+- refers to the current context(object, function or global)
+- arrow function don't have their own **this**
+
 ## common gotchas & tricks
+❌ Don’t use == → use === for strict equality
+✅ Use ?. (optional chaining) to safely access properties
+✅ Use destructuring for cleaner code
+✅ Prefer const by default, only use let when needed
+❌ Avoid mutating objects/arrays directly – prefer immutability
