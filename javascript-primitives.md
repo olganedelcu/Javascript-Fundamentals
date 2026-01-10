@@ -130,4 +130,4 @@ typeof Symbol() // "symbol"
 typeof null // "object" 🤯 (yes, legacy js bug)
 ```
 
-✅ up next: Javascript_Async.md → promises, async/await, and all that jazz
+✅ up next: [async-promises.md](async-promises.md) → promises, async/await, and all that jazz
