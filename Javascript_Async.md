@@ -75,9 +75,40 @@ async function getData() {
 ```
 
 #### what does Async functions return and why?
-async await is a **syntax sugar** for **promises** and whenever you write async in front of a function, it will basically **wrap** **that code in a promise** and return a promise that will **resolve** with the return of that function. So whenever you have an async function, that function will return a promise that will end up resolving with whatever the return of that function is.
+⚙️ async await is a **syntax sugar** for **promises** and whenever you write async in front of a function, it will basically **wrap** **that code in a promise** and return a promise that will **resolve** with the return of that function. 
+🧠 so whenever you have an async function, that function will return a promise that will end up resolving with whatever the return of that function is.
 example:
 
 ```js
+import {useEffect, useState } from "react";
+
+
+function Characters() {
+    const [people, setPeople ] = useState([]);
+    
+    async function getPeople(){
+       try {
+            const data = await fetch("https://swapi.dev/api/people");
+            const response = await data.json();
+            setPeople(response.results);  
+       }  catch(err) {
+            console.log(err.message);
+       }
+    }
+    
+    useEffect(() => {
+        getPeople();
+    }, [])
+
+    return <>
+    {people.map((character, index) => (
+        return <p key={index}>{character.name}
+    )
+        </p>
+    )}
+    </>
+}
+
+export default Characters;
 
 ```
