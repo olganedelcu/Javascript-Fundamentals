@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software Engineering Interview Guide</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --bg: #f7fafc;
+            --card-bg: #ffffff;
+            --text: #2d3748;
+            --text-light: #4a5568;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .intro {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .topics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .topic-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        .topic-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
+        }
+
+        .topic-card a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .topic-card a:hover {
+            text-decoration: underline;
+        }
+
+        .topic-card ul {
+            margin-left: 1.25rem;
+            color: var(--text-light);
+        }
+
+        .topic-card li {
+            margin: 0.5rem 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+
+        .quote {
+            font-style: italic;
+            margin-top: 1rem;
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .topics {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧙‍♀️ Software Engineering Interview Guide</h1>
+            <p>A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <section class="intro">
+            <h2>✨ What this is</h2>
+            <p>A clean and simple guide to help you revise <strong>JavaScript</strong>, <strong>TypeScript</strong>, and modern frontend/backend fundamentals - from the <strong>basics</strong> to the more <strong>advanced</strong> topics.</p>
+            <p>You'll find bite-sized explanations, easy examples, and interview-style questions. No fluff. No overwhelm. Just practical stuff.</p>
+        </section>
+
+        <h2 style="margin-bottom: 1.5rem; color: var(--primary);">📚 What's Inside?</h2>
+
+        <div class="topics">
+            <div class="topic-card">
+                <h3>🧠 JavaScript Primitives</h3>
+                <ul>
+                    <li>All 7 primitive data types</li>
+                    <li>Immutability & pass-by-value behavior</li>
+                    <li>Primitive vs object comparison</li>
+                    <li>Type coercion & truthiness</li>
+                </ul>
+                <a href="javascript-primitives.html">Read more →</a>
+            </div>
+
+            <div class="topic-card">
+                <h3>⏳ JavaScript + TypeScript Fundamentals</h3>
+                <ul>
+                    <li>var vs let vs const</li>
+                    <li>Scope, hoisting, closures</li>
+                    <li>Types, interfaces, generics</li>
+                    <li>Classes, inheritance, `this` keyword</li>
+                </ul>
+                <a href="javascript-fundamentals.html">Read more →</a>
+            </div>
+
+            <div class="topic-card">
+                <h3>⚡ Async & Promises</h3>
+                <ul>
+                    <li>Is JavaScript synchronous?</li>
+                    <li>How promises actually work</li>
+                    <li>`async/await` explained simply</li>
+                    <li>Pure functions & functional programming</li>
+                </ul>
+                <a href="async-promises.html">Read more →</a>
+            </div>
+
+            <div class="topic-card">
+                <h3>📦 NPM & Dependencies</h3>
+                <ul>
+                    <li>What is npm?</li>
+                    <li>How package.json works</li>
+                    <li>Dependencies vs devDependencies</li>
+                    <li>Common npm commands</li>
+                </ul>
+                <a href="npm-dependencies.html">Read more →</a>
+            </div>
+
+            <div class="topic-card">
+                <h3>🚀 Frontend Performance Optimization</h3>
+                <ul>
+                    <li>Storage options (cookies, localStorage)</li>
+                    <li>Bundle compression & minification</li>
+                    <li>Code splitting & lazy loading</li>
+                    <li>XSS attacks & security</li>
+                </ul>
+                <a href="frontend-performance.html">Read more →</a>
+            </div>
+
+            <div class="topic-card">
+                <h3>🔷 TypeScript Advanced Concepts</h3>
+                <ul>
+                    <li>Generic functions in TypeScript</li>
+                    <li>`as const` vs normal const</li>
+                    <li>Type vs interface</li>
+                    <li>Type guards & union types</li>
+                </ul>
+                <a href="typescript-advanced.html">Read more →</a>
+            </div>
+
+            <div class="topic-card">
+                <h3>⚙️ Debouncing</h3>
+                <ul>
+                    <li>What is debouncing & why use it</li>
+                    <li>Preventing unnecessary API calls</li>
+                    <li>Real-world use cases</li>
+                    <li>Search bars, resize events</li>
+                </ul>
+                <a href="debouncing.html">Read more →</a>
+            </div>
+        </div>
+
+        <footer>
+            <h3>💡 How to Use This</h3>
+            <p>1. Skim the topic list above<br>
+            2. Click into any topic you want to revise<br>
+            3. Go through examples, notes, and potential questions<br>
+            4. Relax. God's got you. 🙏</p>
+
+            <div class="quote">
+                "Commit your work to the Lord, and your plans will be established." - Proverbs 16:3
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
