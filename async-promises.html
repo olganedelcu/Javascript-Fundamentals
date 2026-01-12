@@ -14,127 +14,125 @@
         </header>
 
         <main class="main-content">
-            <h1>⏳ javascript: async, promises & more</h1><br>
-<br>
-<h2>🤔 is javascript synchronous?</h2><br>
-<br>
-<p>yes - <strong>javascript is a synchronous, single-threaded language</strong>,<br>
-it runs <strong>one thing at a time</strong>, line by line.</p><br>
-<br>
-<p>but... we can <strong>mimic asynchronous behaviour</strong> using: <br>
-- <strong>callbacks</strong><br>
-- <strong>promises</strong><br>
-- <strong>async/await</strong></p><br>
-<br>
-<p>these tools allow us to:<br>
-- wait for data (like from APIs)<br>
-- handle delays (like timers)<br>
-- avoid blocking the main thread</p><br>
-<br>
-<p>---</p><br>
-<br>
-<h2>🪝 callbacks</h2><br>
-<br>
-<p>a <strong>callback</strong> is a function passed into another function to be run later.</p><br>
-<br>
-<pre><code>function fetchData(callback) {<br>
-    setTimeout(() => {<br>
-        callback('data received!');<br>
-    },1000)<br>
-}<br>
-<br>
-<p>fetchData((result) => {<br>
-    console.log(result);<br>
-});<br>
-</code></pre><br>
-🧠 but <strong>callbacks</strong> can get messy - known as "callback hell":</p><br>
-<br>
-<pre><code>doThing(() => {<br>
-    doNext() => {<br>
-        doAnother(() =>{<br>
-            ...<br>
-        })<br>
-    }<br>
-})<br>
-</code></pre><br>
-<h2>💭 promises</h2><br>
-a <strong>promise</strong> is javascript object that represents a value you <strong>don't have yet</strong>, but will get in the <strong>future</strong>(or maybe not).<br>
-<br>
-<p>it's like saying "i promise you something later"</p><br>
-<br>
-<p>🧱 <strong>promise has 3 possible states:</strong><br>
-- <code>pending</code> – still waiting  <br>
-- <code>fulfilled</code>- got the value<br>
-- <code>rejected</code> - something went wrong</p><br>
-<br>
-<p>you can <strong>.then()</strong> for success, <strong>.catch()</strong> for erros: <br>
-<pre><code>    fetchData<br>
-    .then((res) => console.log(res))<br>
-    .catch((err) => console.log(err));<br>
-</code></pre><br>
-<h2>⚡ async / await</h2><br>
-- syntactic sugar over promises 🚀<br>
-- ✅ makes async code look synchronous<br>
-- 📦 await can only be used inside an async function<br>
-<pre><code>async function getData() {<br>
-    try {<br>
-        const res = await fetchData();<br>
-        console.log(res);<br>
-    } catch (err) {<br>
-        console.log(err);<br>
-    }<br>
-}<br>
-</code></pre></p><br>
-<br>
-<p>#### what does Async functions return and why?<br>
-⚙️ async await is a <strong>syntax sugar</strong> for <strong>promises</strong> and whenever you write async in front of a function, it will basically <strong>wrap</strong> <strong>that code in a promise</strong> and return a promise that will <strong>resolve</strong> with the return of that function. <br>
-🧠 so whenever you have an async function, that function will return a promise that will end up resolving with whatever the return of that function is.<br>
-example:</p><br>
-<br>
-<pre><code>import {useEffect, useState } from "react";<br>
-<br>
-<p>function Characters() {<br>
-    const [people, setPeople ] = useState([]);<br>
-    <br>
-    async function getPeople(){<br>
-       try {<br>
-            const data = await fetch("https://swapi.dev/api/people");<br>
-            const response = await data.json();<br>
-            setPeople(response.results);  <br>
-       }  catch(err) {<br>
-            console.log(err.message);<br>
-       }<br>
-    }<br>
-    <br>
-    useEffect(() => {<br>
-        getPeople();<br>
-    }, [])</p><br>
-<br>
-<p>return <><br>
-    {people.map((character, index) => (<br>
-        return <p key={index}>{character.name}<br>
-    )<br>
-        </p><br>
-    )}<br>
-    </><br>
-}</p><br>
-<br>
-<p>export default Characters;</p><br>
-<br>
-<p></code></pre></p><br>
-<br>
-<h3>What is a pure function and when do we use it?</h3><br>
-A pure function is very useful when using <strong>functional programming</strong>. Why? Because it really <strong>does not modify anything else</strong> — it has <strong>no side effects</strong>. 🌱<br>
-<br>
-<p>You really just <strong>give it an input</strong>, and it gives you an <strong>output</strong>, and there is no other change to:</p><br>
-<br>
-<p>- any global state of the system 🌐,<br>
-- or any <strong>calls</strong> outside the system (like APIs, localStorage, DBs, etc.)</p><br>
-<br>
-<p>This is extremely good because they are very <strong>deterministic</strong> ✅ — so you always know:<br>
-- given an input → you always get the same output.</p><br>
-<br>
-<p>they're commonly used in <strong>functional programming</strong> and in most J<strong>avaScript codebases</strong>, because it makes things simpler, more predictable, and easier to <strong>test</strong>.</p>
+            <h1>⏳ javascript: async, promises & more</h1>
+
+            <h2>🤔 is javascript synchronous?</h2>
+            <p>yes - <strong>javascript is a synchronous, single-threaded language</strong>, it runs <strong>one thing at a time</strong>, line by line.</p>
+
+            <p>but... we can <strong>mimic asynchronous behaviour</strong> using:</p>
+            <ul>
+                <li><strong>callbacks</strong></li>
+                <li><strong>promises</strong></li>
+                <li><strong>async/await</strong></li>
+            </ul>
+
+            <p>these tools allow us to:</p>
+            <ul>
+                <li>wait for data (like from APIs)</li>
+                <li>handle delays (like timers)</li>
+                <li>avoid blocking the main thread</li>
+            </ul>
+
+            <h2>🪝 callbacks</h2>
+            <p>a <strong>callback</strong> is a function passed into another function to be run later.</p>
+            <pre><code>function fetchData(callback) {
+    setTimeout(() => {
+        callback('data received!');
+    },1000)
+}
+
+fetchData((result) => {
+    console.log(result);
+});</code></pre>
+
+            <p>🧠 but <strong>callbacks</strong> can get messy - known as "callback hell":</p>
+            <pre><code>doThing(() => {
+    doNext() => {
+        doAnother(() =>{
+            ...
+        })
+    }
+})</code></pre>
+
+            <h2>💭 promises</h2>
+            <p>a <strong>promise</strong> is javascript object that represents a value you <strong>don't have yet</strong>, but will get in the <strong>future</strong> (or maybe not).</p>
+            <p>it's like saying "i promise you something later"</p>
+
+            <p>🧱 <strong>promise has 3 possible states:</strong></p>
+            <ul>
+                <li><code>pending</code> – still waiting</li>
+                <li><code>fulfilled</code> - got the value</li>
+                <li><code>rejected</code> - something went wrong</li>
+            </ul>
+
+            <p>you can <strong>.then()</strong> for success, <strong>.catch()</strong> for errors:</p>
+            <pre><code>fetchData
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));</code></pre>
+
+            <h2>⚡ async / await</h2>
+            <ul>
+                <li>syntactic sugar over promises 🚀</li>
+                <li>✅ makes async code look synchronous</li>
+                <li>📦 await can only be used inside an async function</li>
+            </ul>
+            <pre><code>async function getData() {
+    try {
+        const res = await fetchData();
+        console.log(res);
+    } catch (err) {
+        console.log(err);
+    }
+}</code></pre>
+
+            <h3>what does Async functions return and why?</h3>
+            <p>⚙️ async await is a <strong>syntax sugar</strong> for <strong>promises</strong> and whenever you write async in front of a function, it will basically <strong>wrap</strong> <strong>that code in a promise</strong> and return a promise that will <strong>resolve</strong> with the return of that function.</p>
+            <p>🧠 so whenever you have an async function, that function will return a promise that will end up resolving with whatever the return of that function is.</p>
+
+            <p>example:</p>
+            <pre><code>import {useEffect, useState } from "react";
+
+function Characters() {
+    const [people, setPeople ] = useState([]);
+
+    async function getPeople(){
+       try {
+            const data = await fetch("https://swapi.dev/api/people");
+            const response = await data.json();
+            setPeople(response.results);
+       }  catch(err) {
+            console.log(err.message);
+       }
+    }
+
+    useEffect(() => {
+        getPeople();
+    }, [])
+
+    return <>
+        {people.map((character, index) => (
+            return <p key={index}>{character.name}</p>
+        )}
+    </>
+}
+
+export default Characters;</code></pre>
+
+            <h3>What is a pure function and when do we use it?</h3>
+            <p>A pure function is very useful when using <strong>functional programming</strong>. Why? Because it really <strong>does not modify anything else</strong> — it has <strong>no side effects</strong>. 🌱</p>
+
+            <p>You really just <strong>give it an input</strong>, and it gives you an <strong>output</strong>, and there is no other change to:</p>
+            <ul>
+                <li>any global state of the system 🌐,</li>
+                <li>or any <strong>calls</strong> outside the system (like APIs, localStorage, DBs, etc.)</li>
+            </ul>
+
+            <p>This is extremely good because they are very <strong>deterministic</strong> ✅ — so you always know:</p>
+            <ul>
+                <li>given an input → you always get the same output.</li>
+            </ul>
+
+            <p>they're commonly used in <strong>functional programming</strong> and in most <strong>JavaScript codebases</strong>, because it makes things simpler, more predictable, and easier to <strong>test</strong>.</p>
         </main>
 
         <footer>

@@ -14,94 +14,69 @@
         </header>
 
         <main class="main-content">
-            <h3>What is a generic function in TS and can you write one?</h3><br>
-<br>
-<p>🔁 a generic function is a way to write code that is type-flexible —<br>
-without using any.</p><br>
-<br>
-<p>⚙️ meaning: you can provide not only regular arguments, but also <strong>typed arguments</strong> — and the function still works for different data types.</p><br>
-<br>
-<pre><code>function myNewFunction<T>(one: T): T {<br>
-  return one;<br>
-}<br>
-</code></pre><br>
-💡 here, T is the generic type argument.<br>
-we can call this function like:<br>
-<pre><code>const result = myNewFunction<number>(5);<br>
-</code></pre><br>
-✅ and now result is inferred to be of type number.<br>
-<br>
-<p>🛑 but if you try:<br>
-<pre><code>const result = myNewFunction<number>("string");<br>
-</code></pre><br>
-❌ you get an <strong>error</strong> — because <strong>"string" is not a number, and TS catches that</strong>.</p><br>
-<br>
-<p>📦 that's why they’re called <strong>generic functions</strong> — you declare a type variable like T,<br>
-and then use it consistently across parameters and return types.<br>
-this helps you reuse logic, without sacrificing type safety.</p><br>
-<br>
-<p>#### ❓ what is an as const in typescript? how is it different from normal const?</p><br>
-<br>
-<p>🛡️ when you use as const, you are telling typescript to treat the entire object as deeply immutable.<br>
-🔒 this means you cannot modify any part of it — not even nested properties.<br>
-<pre><code>const config = {<br>
-    host: "whastsf";<br>
-    port:45 ;<br>
-    auth: {<br>
-        client: "ad",<br>
-    }<br>
-} as const;<br>
-</code></pre><br>
-if you try<br>
-<pre><code>config.host = "whatever"; // ❌ not possible<br>
-config.auth.client = "whatever"; // ❌ we can not change it<br>
-</code></pre><br>
-you will get an error.</p><br>
-<br>
-<p>📦 every nested property becomes immutable.</p><br>
-<br>
-<p>💬 in js, you could also freeze the object:<br>
-<pre><code>Object.freeze(config);<br>
-</code></pre><br>
-but ⚠️ this only works at runtime — and it only freezes the first level,<br>
-not the nested ones.</p><br>
-<br>
-<p>🛠️ as const is evaluated at build time, not runtime - it’s a typescript-only tool for locking objects.</p><br>
-<br>
-<h3>What is the difference between type and interface in Typescript? When would you use one or the other</h3><br>
-<br>
-<p>we could interchange both for most part, the only difference at build time interfaces can be <strong>merged</strong>, types must be <strong>unique</strong>.</p><br>
-<br>
-<p>this means that you can declare <strong>the same interface multiple times</strong>, and TS will <strong>merge</strong> them automatically.</p><br>
-<br>
-<p>but if you declare the <strong>same type name twice</strong>, it will throw an <strong>error</strong>.</p><br>
-<br>
-<p>💡 so in a <strong>codebase</strong>, you usually go for one of them and stick with it for <strong>consistency</strong>.</p><br>
-<br>
-<p>#### when use them?<br>
-if you're building a library, where you want people to extend certain types (e.g. Express.js with Request object),<br>
-it's better to use an <strong>interface</strong> — and TS will merge them behind the scenes if a person expands that interface.</p><br>
-<br>
-<p>i usually use type to define domain entities — e.g. ecommerce Product, Price, etc and use interface for auxiliary shapes like:</p><br>
-<br>
-<p>- <strong>props</strong> of a React component<br>
-- <strong>input</strong> params of a function</p><br>
-<br>
-<p>#### What is a type guard in TS? When use it<br>
-it's a way of writing a function that <strong>filters</strong> or guards a <strong>specific type</strong> from <strong>a union type</strong>.<br>
-<pre><code>type Fruit = Pineapple | Banana;<br>
-</code></pre><br>
-you can write a function like:<br>
-<pre><code>function isPineapple(fruit: Fruit): fruit is Pineapple {<br>
-  return (fruit as Pineapple).spiky !== undefined;<br>
-}<br>
-</code></pre><br>
-this allows you to <strong>narrow down</strong> the type safely.<br>
-so inside that condition, TS knows you’re working with a <strong>Pineapple</strong> —<br>
-and you get <strong>autocompletion</strong>, type safety, and error checking.<br>
-use it whenever you’re dealing with <strong>union types</strong>, and you need to work with one specific subtype.</p><br>
-<br>
+            <h3>What is a generic function in TS and can you write one?</h3>
+            <p>🔁 a generic function is a way to write code that is type-flexible — without using any.</p>
+            <p>⚙️ meaning: you can provide not only regular arguments, but also <strong>typed arguments</strong> — and the function still works for different data types.</p>
+            <pre><code>function myNewFunction&lt;T&gt;(one: T): T {
+  return one;
+}</code></pre>
 
+            <p>💡 here, T is the generic type argument. we can call this function like:</p>
+            <pre><code>const result = myNewFunction&lt;number&gt;(5);</code></pre>
+            <p>✅ and now result is inferred to be of type number.</p>
+
+            <p>🛑 but if you try:</p>
+            <pre><code>const result = myNewFunction&lt;number&gt;("string");</code></pre>
+            <p>❌ you get an <strong>error</strong> — because <strong>"string" is not a number, and TS catches that</strong>.</p>
+
+            <p>📦 that's why they're called <strong>generic functions</strong> — you declare a type variable like T, and then use it consistently across parameters and return types. this helps you reuse logic, without sacrificing type safety.</p>
+
+            <h3>❓ what is an as const in typescript? how is it different from normal const?</h3>
+            <p>🛡️ when you use as const, you are telling typescript to treat the entire object as deeply immutable.</p>
+            <p>🔒 this means you cannot modify any part of it — not even nested properties.</p>
+            <pre><code>const config = {
+    host: "whastsf";
+    port:45 ;
+    auth: {
+        client: "ad",
+    }
+} as const;</code></pre>
+
+            <p>if you try</p>
+            <pre><code>config.host = "whatever"; // ❌ not possible
+config.auth.client = "whatever"; // ❌ we can not change it</code></pre>
+            <p>you will get an error.</p>
+            <p>📦 every nested property becomes immutable.</p>
+
+            <p>💬 in js, you could also freeze the object:</p>
+            <pre><code>Object.freeze(config);</code></pre>
+            <p>but ⚠️ this only works at runtime — and it only freezes the first level, not the nested ones.</p>
+            <p>🛠️ as const is evaluated at build time, not runtime - it's a typescript-only tool for locking objects.</p>
+
+            <h3>What is the difference between type and interface in Typescript? When would you use one or the other</h3>
+            <p>we could interchange both for most part, the only difference at build time interfaces can be <strong>merged</strong>, types must be <strong>unique</strong>.</p>
+            <p>this means that you can declare <strong>the same interface multiple times</strong>, and TS will <strong>merge</strong> them automatically.</p>
+            <p>but if you declare the <strong>same type name twice</strong>, it will throw an <strong>error</strong>.</p>
+            <p>💡 so in a <strong>codebase</strong>, you usually go for one of them and stick with it for <strong>consistency</strong>.</p>
+
+            <h3>when use them?</h3>
+            <p>if you're building a library, where you want people to extend certain types (e.g. Express.js with Request object), it's better to use an <strong>interface</strong> — and TS will merge them behind the scenes if a person expands that interface.</p>
+            <p>i usually use type to define domain entities — e.g. ecommerce Product, Price, etc and use interface for auxiliary shapes like:</p>
+            <ul>
+                <li><strong>props</strong> of a React component</li>
+                <li><strong>input</strong> params of a function</li>
+            </ul>
+
+            <h3>What is a type guard in TS? When use it</h3>
+            <p>it's a way of writing a function that <strong>filters</strong> or guards a <strong>specific type</strong> from <strong>a union type</strong>.</p>
+            <pre><code>type Fruit = Pineapple | Banana;</code></pre>
+
+            <p>you can write a function like:</p>
+            <pre><code>function isPineapple(fruit: Fruit): fruit is Pineapple {
+  return (fruit as Pineapple).spiky !== undefined;
+}</code></pre>
+
+            <p>this allows you to <strong>narrow down</strong> the type safely. so inside that condition, TS knows you're working with a <strong>Pineapple</strong> — and you get <strong>autocompletion</strong>, type safety, and error checking. use it whenever you're dealing with <strong>union types</strong>, and you need to work with one specific subtype.</p>
         </main>
 
         <footer>

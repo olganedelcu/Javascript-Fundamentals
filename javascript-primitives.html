@@ -14,128 +14,100 @@
         </header>
 
         <main class="main-content">
-            <h1>🧠 JavaScript Primitives</h1><br>
-<br>
-<h2>👋 introduction</h2><br>
-<br>
-<p>a <strong>primitive</strong> is a value that’s <strong>not an object</strong>.  <br>
-it’s the simple stuff: you can store it, pass it around, compare it, or print it.</p><br>
-<br>
-<p>primitives are <strong>immutable</strong> — you don’t change their internal value, you just create a new one.</p><br>
-<br>
-<p>---</p><br>
-<br>
-<h2>🔢 the 7 primitive data types</h2><br>
-<br>
-<p>---</p><br>
-<br>
-<h3>1. <strong>string</strong></h3><br>
-used for text: usernames, messages, urls, etc.<br>
-<br>
-<pre><code>const raw = "  olga.2002  ";<br>
-const username = raw.trim().toLowerCase(); <br>
-// removes extra spaces & converts to lowercase<br>
-<br>
-<p>console.log("5" + 1); // '51' (string + number = string)<br>
-console.log("5" - 1); // 4 (js converts string to number)<br>
-</code></pre></p><br>
-<br>
-<h3>2. <strong>number</strong></h3><br>
-<br>
-<p>integers and decimals. used for prices, lists number, percentanges, maths operations...</p><br>
-<br>
-<pre><code>const grades = [9, 10, 5.9]<br>
-const sum = grades.reduce((sum, grades) => {sum + grades, 0})<br>
-</code></pre><br>
-<br>
-<h3>3. <strong>boolean</strong></h3><br>
-just true or false. <br>
-used for permissions, toggles, flags, "is this valid?"<br>
-<br>
-<pre><code>const email = "olganedelcuam@gmail.com";<br>
-const hasAt = email.include("@");<br>
-const hasDot = email.slipt("@")[1].include(".");<br>
-<br>
-<p>const isValidEmail = hasAt && hasDot;<br>
-if (!isValidEmail) console.log("It is not a valid email")<br>
-</code></pre></p><br>
-<br>
-<p>Truthiness(super practical):<br>
-<pre><code>const input = ""<br>
-if(!input) = console.log("disable submit button");<br>
-</code></pre></p><br>
-<br>
-<h3>4. <strong>undefined</strong></h3><br>
-means "not assigned" or "does not exit here".<br>
-<br>
-<pre><code>const config = { theme: "dark"};<br>
-const lang = config.language; // undefined<br>
-console.log(lang ?? "en") // fallback to "en"<br>
-</code></pre><br>
-<br>
-<h3>5. <strong>null</strong></h3><br>
-"intentionally empty" - you are saying "this is empty on purpose".<br>
-<br>
-<pre><code>let selectedUserId = 42;<br>
-<br>
-<p>// later user clear selection <br>
-selectedUserId = null;</p><br>
-<br>
-<p>if (selectedUserID === null) console.log("No user selected");<br>
-</code></pre></p><br>
-<br>
-<h3>6. <strong>bigint</strong></h3><br>
-used for really big numbers (like massive IDs, ledgers).<br>
-<br>
-<pre><code>const id = 12234678765432567654n; <br>
-const next = id + 1n; <br>
-<br>
-<p>console.log(next); // outcome: 12234678765432567655n<br>
-</code></pre></p><br>
-<br>
-<h3>7. <strong>symbol</strong></h3><br>
-used for unique identifiers - often in libraries to avoid name collisions, used for metadata - avoiding clashes with other code.<br>
-<br>
-<pre><code>const internalId = Symbol("internalId"); <br>
-<br>
-<p>const user = { name: "Ana" };<br>
-user[internalId] = "x9a-23";</p><br>
-<br>
-<p>console.log(user.internalId); // undefined<br>
-console.log(user[internalId]); // "x9a-23"<br>
-</code></pre></p><br>
-<br>
-<h3>8. <strong>primitive vs object</strong></h3><br>
-primitives behave like values <br>
-<br>
-<pre><code>let a = "hello";<br>
-let b = a;<br>
-b = "bye";<br>
-<br>
-<p>console.log(a) // "hello"<br>
-console.log(b) // "bye"<br>
-</code></pre><br>
-🔸objects behave like references:<br>
-<pre><code>let a = { msg: "hello" };<br>
-let b = a;<br>
-b.msg = "bye";</p><br>
-<br>
-<p>console.log(a.msg) // "bye"</p><br>
-<br>
-<p></code></pre><br>
-<h2>type coercion</h2><br>
-cheat sheet for checking types:</p><br>
-<br>
-<pre><code>typeof "x" // "string" <br>
-typeof 10 // "number"<br>
-typeof true // "boolean" <br>
-typeof undefined // "undefined" <br>
-typeof 10n // "bigint"  <br>
-typeof Symbol() // "symbol" <br>
-typeof null // "object" 🤯 (yes, legacy js bug)<br>
-</code></pre><br>
-<br>
-<p>✅ up next: <a href="async-promises.md">async-promises.md</a> → promises, async/await, and all that jazz</p>
+            <h1>🧠 JavaScript Primitives</h1>
+
+            <h2>👋 introduction</h2>
+            <p>a <strong>primitive</strong> is a value that's <strong>not an object</strong>. it's the simple stuff: you can store it, pass it around, compare it, or print it.</p>
+            <p>primitives are <strong>immutable</strong> — you don't change their internal value, you just create a new one.</p>
+
+            <h2>the 7 primitive data types</h2>
+
+            <h3>1. string</h3>
+            <p>used for text: usernames, messages, urls, etc.</p>
+            <pre><code>const raw = "  olga.2002  ";
+const username = raw.trim().toLowerCase();
+// removes extra spaces & converts to lowercase
+
+console.log("5" + 1); // '51' (string + number = string)
+console.log("5" - 1); // 4 (js converts string to number)</code></pre>
+
+            <h3>2. number</h3>
+            <p>integers and decimals. used for prices, lists number, percentages, maths operations...</p>
+            <pre><code>const grades = [9, 10, 5.9]
+const sum = grades.reduce((sum, grades) => {sum + grades, 0})</code></pre>
+
+            <h3>3. boolean</h3>
+            <p>just true or false. used for permissions, toggles, flags, "is this valid?"</p>
+            <pre><code>const email = "olganedelcuam@gmail.com";
+const hasAt = email.include("@");
+const hasDot = email.split("@")[1].include(".");
+
+const isValidEmail = hasAt && hasDot;
+if (!isValidEmail) console.log("It is not a valid email")</code></pre>
+
+            <p>Truthiness (super practical):</p>
+            <pre><code>const input = ""
+if(!input) = console.log("disable submit button");</code></pre>
+
+            <h3>4. undefined</h3>
+            <p>means "not assigned" or "does not exist here".</p>
+            <pre><code>const config = { theme: "dark"};
+const lang = config.language; // undefined
+console.log(lang ?? "en") // fallback to "en"</code></pre>
+
+            <h3>5. null</h3>
+            <p>"intentionally empty" - you are saying "this is empty on purpose".</p>
+            <pre><code>let selectedUserId = 42;
+
+// later user clear selection
+selectedUserId = null;
+
+if (selectedUserID === null) console.log("No user selected");</code></pre>
+
+            <h3>6. bigint</h3>
+            <p>used for really big numbers (like massive IDs, ledgers).</p>
+            <pre><code>const id = 12234678765432567654n;
+const next = id + 1n;
+
+console.log(next); // outcome: 12234678765432567655n</code></pre>
+
+            <h3>7. symbol</h3>
+            <p>used for unique identifiers - often in libraries to avoid name collisions, used for metadata - avoiding clashes with other code.</p>
+            <pre><code>const internalId = Symbol("internalId");
+
+const user = { name: "Ana" };
+user[internalId] = "x9a-23";
+
+console.log(user.internalId); // undefined
+console.log(user[internalId]); // "x9a-23"</code></pre>
+
+            <h3>8. primitive vs object</h3>
+            <p>primitives behave like values</p>
+            <pre><code>let a = "hello";
+let b = a;
+b = "bye";
+
+console.log(a) // "hello"
+console.log(b) // "bye"</code></pre>
+
+            <p>objects behave like references:</p>
+            <pre><code>let a = { msg: "hello" };
+let b = a;
+b.msg = "bye";
+
+console.log(a.msg) // "bye"</code></pre>
+
+            <h2>type coercion</h2>
+            <p>cheat sheet for checking types:</p>
+            <pre><code>typeof "x" // "string"
+typeof 10 // "number"
+typeof true // "boolean"
+typeof undefined // "undefined"
+typeof 10n // "bigint"
+typeof Symbol() // "symbol"
+typeof null // "object" 🤯 (yes, legacy js bug)</code></pre>
+
+            <p>✅ up next: <a href="async-promises.html">async-promises</a> → promises, async/await, and all that jazz</p>
         </main>
 
         <footer>

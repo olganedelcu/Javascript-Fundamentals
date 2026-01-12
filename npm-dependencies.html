@@ -14,100 +14,87 @@
         </header>
 
         <main class="main-content">
-            <h1>📦 npm & dependencies</h1><br>
-there are 2 files that show up in almost every JavaScript project:<br>
-<pre><code>package.json<br>
-package-lock.json<br>
-</code></pre><br>
-and then there is also a bunch of stuff under "dependences" and "devDependences"<br>
-<h3>📄 package.json</h3><br>
-this file tells us the key things about the project:<br>
-- name<br>
-- which packages it needs<br>
-- which scripts you can run(like <strong>npm run dev</strong>)<br>
-<br>
-<p>You'll usually see two important sections:<br>
-###### ✅ <strong>dependences</strong><br>
-these are the packages your project needs to run. <br>
-If you are using React, React will be listed here:<br>
-<pre><code>"dependencies": {<br>
-  "react": "^18.2.0",<br>
-  "axios": "^1.5.0"<br>
-}<br>
-</code></pre><br>
-Installed with:<br>
-<pre><code>npm install [package-name]<br>
-</code></pre></p><br>
-<br>
-<h3>🛠 "devDependencies"</h3><br>
-<br>
-<p>These are tools you only need while you're coding — like linters, bundlers, formatters.<br>
-<pre><code>"devDependencies": {<br>
-  "eslint": "^8.54.0",<br>
-  "vite": "^5.1.0"<br>
-}<br>
-</code></pre></p><br>
-<br>
-<p>Installed with:<br>
-<pre><code>npm install -D [package-name]<br>
-</code></pre><br>
-<h3>🔒 package-lock.json — the version freeze</h3></p><br>
-<br>
-<p>this file is created automatically when you install packages.</p><br>
-<br>
-<p>ot locks in the exact versions of all your dependencies (and their dependencies too).</p><br>
-<br>
-<p>why does that matter?</p><br>
-<br>
-<p>because different versions can behave differently. So when you share your project with someone else, this file makes sure everyone installs the exact same versions. No surprises.</p><br>
-<br>
-<p>yes, it can get big. yes, you should commit it.</p><br>
-<br>
-<h3>🛠 Common npm commands</h3><br>
-<br>
-<p>| command | what it does |<br>
-|---------|--------------|<br>
-| <code>npm install</code> | installs everything from package.json |<br>
-| <code>npm install [pkg]</code> | installs a specific package |<br>
-| <code>npm install -D [pkg]</code> | installs as a dev dependency |<br>
-| <code>npm run dev</code> | starts your dev server (like Vite or Next) |<br>
-| <code>npm run build</code> | builds your app for production |<br>
-| <code>npm run lint</code> | runs a linter (if set up) |<br>
-| <code>npm outdated</code> | shows outdated packages |<br>
-| <code>npm audit</code> | checks for security issues |<br>
-<h3>💬 Why do we need dependencies anyway?</h3></p><br>
-<br>
-<p>because we don’t want to build everything from scratch.<br>
-imagine writing your own router. or state manager. or HTTP client. 😅</p><br>
-<br>
-<p>dependencies are tools that make development faster and easier.</p><br>
-<br>
-<p>- want routing? → react-router-dom<br>
-- need animations? → framer-motion<br>
-- want type checking? → typescript<br>
-- fetch data? → axios or fetch</p><br>
-<br>
-<p>they save us time. And honestly, they make projects a lot more fun to build.</p><br>
-<br>
-<p>##### Bonus: what happens when you npm run build<br>
-when you run this command, npm looks into the scripts section of package.json and executes whatever’s written there.<br>
-<pre><code>"scripts": {<br>
-  "dev": "vite",<br>
-  "build": "vite build",<br>
-  "lint": "eslint ."<br>
-}<br>
-</code></pre></p><br>
-<br>
-<p>so <strong>npm run build</strong> usually means:<br>
-bundle everything, optimize it, minify the code, and get it ready for production.</p><br>
-<br>
-<p>#### 🧠 tl;dr</p><br>
-<br>
-<p>- <strong>package.json</strong> — tells npm what your project needs + what scripts it can run<br>
-- <strong>package-lock.json</strong> — makes sure everyone installs the exact same versions<br>
-- <strong>dependencies</strong> = required for the app to run<br>
-- <strong>devDependencies</strong> = required for you to build, test, or lint<br>
-- <strong>npm run</strong> = how you trigger custom scripts</p>
+            <h1>📦 npm & dependencies</h1>
+            <p>there are 2 files that show up in almost every JavaScript project:</p>
+            <pre><code>package.json
+package-lock.json</code></pre>
+            <p>and then there is also a bunch of stuff under "dependencies" and "devDependencies"</p>
+
+            <h3>📄 package.json</h3>
+            <p>this file tells us the key things about the project:</p>
+            <ul>
+                <li>name</li>
+                <li>which packages it needs</li>
+                <li>which scripts you can run (like <strong>npm run dev</strong>)</li>
+            </ul>
+
+            <p>You'll usually see two important sections:</p>
+
+            <h3>✅ dependencies</h3>
+            <p>these are the packages your project needs to run. If you are using React, React will be listed here:</p>
+            <pre><code>"dependencies": {
+  "react": "^18.2.0",
+  "axios": "^1.5.0"
+}</code></pre>
+            <p>Installed with:</p>
+            <pre><code>npm install [package-name]</code></pre>
+
+            <h3>🛠 devDependencies</h3>
+            <p>These are tools you only need while you're coding — like linters, bundlers, formatters.</p>
+            <pre><code>"devDependencies": {
+  "eslint": "^8.54.0",
+  "vite": "^5.1.0"
+}</code></pre>
+            <p>Installed with:</p>
+            <pre><code>npm install -D [package-name]</code></pre>
+
+            <h3>🔒 package-lock.json — the version freeze</h3>
+            <p>this file is created automatically when you install packages.</p>
+            <p>it locks in the exact versions of all your dependencies (and their dependencies too).</p>
+            <p>why does that matter?</p>
+            <p>because different versions can behave differently. So when you share your project with someone else, this file makes sure everyone installs the exact same versions. No surprises.</p>
+            <p>yes, it can get big. yes, you should commit it.</p>
+
+            <h3>🛠 Common npm commands</h3>
+            <ul>
+                <li><code>npm install</code> — installs everything from package.json</li>
+                <li><code>npm install [pkg]</code> — installs a specific package</li>
+                <li><code>npm install -D [pkg]</code> — installs as a dev dependency</li>
+                <li><code>npm run dev</code> — starts your dev server (like Vite or Next)</li>
+                <li><code>npm run build</code> — builds your app for production</li>
+                <li><code>npm run lint</code> — runs a linter (if set up)</li>
+                <li><code>npm outdated</code> — shows outdated packages</li>
+                <li><code>npm audit</code> — checks for security issues</li>
+            </ul>
+
+            <h3>💬 Why do we need dependencies anyway?</h3>
+            <p>because we don't want to build everything from scratch. imagine writing your own router. or state manager. or HTTP client. 😅</p>
+            <p>dependencies are tools that make development faster and easier.</p>
+            <ul>
+                <li>want routing? → react-router-dom</li>
+                <li>need animations? → framer-motion</li>
+                <li>want type checking? → typescript</li>
+                <li>fetch data? → axios or fetch</li>
+            </ul>
+            <p>they save us time. And honestly, they make projects a lot more fun to build.</p>
+
+            <h3>Bonus: what happens when you npm run build</h3>
+            <p>when you run this command, npm looks into the scripts section of package.json and executes whatever's written there.</p>
+            <pre><code>"scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "lint": "eslint ."
+}</code></pre>
+            <p>so <strong>npm run build</strong> usually means: bundle everything, optimize it, minify the code, and get it ready for production.</p>
+
+            <h3>🧠 tl;dr</h3>
+            <ul>
+                <li><strong>package.json</strong> — tells npm what your project needs + what scripts it can run</li>
+                <li><strong>package-lock.json</strong> — makes sure everyone installs the exact same versions</li>
+                <li><strong>dependencies</strong> = required for the app to run</li>
+                <li><strong>devDependencies</strong> = required for you to build, test, or lint</li>
+                <li><strong>npm run</strong> = how you trigger custom scripts</li>
+            </ul>
         </main>
 
         <footer>

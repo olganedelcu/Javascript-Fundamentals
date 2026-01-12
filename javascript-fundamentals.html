@@ -14,175 +14,172 @@
         </header>
 
         <main class="main-content">
-            <h1>⏳ javascript + typescript fundamentals</h1><br>
-<br>
-<h2>var vs let vs const</h2><br>
-- var: old, function scoped, hoisted<br>
-- let: block-scoped, reassignable<br>
-- cosnt: block-scoped, not reassignabe<br>
-<pre><code>var car = "car"; // function scoped<br>
-let a = 5; // block scoped<br>
-const b = 1; // cannot reassign <br>
-</code></pre><br>
-<br>
-<h2>🌀 scope, hoisting, closures</h2><br>
-- scope = where variables live<br>
-- hoisting = var + functions get "lifted" to top<br>
-- closures = inner function "remember" outer variables<br>
-<br>
-<p>#### 🧙‍♀️ Hoisting in JavaScript<br>
-##### definition<br>
-hoising is when JS "remembers" all your variables & function declarations <strong>before</strong> it actually runs the code.</p><br>
-<br>
-<p>###### memory allocation phase: <br>
-- all <strong>var</strong>, <strong>function</strong>, and <strong>class</strong> declarations are stored in memory. <br>
-- JS does this automatically, <strong>before</strong> executing line-by-line.</p><br>
-<br>
-<p>###### key insights: <br>
-- only declarations are hoisted -  not initializations<br>
-- <strong>let</strong> and <strong>const</strong> are hoisted too, but not accessible before declaration<br>
-- function declaration are hoisted fully, function expressions are not.</p><br>
-<br>
-<h2>🧳 Closures</h2><br>
-a <strong>closure</strong> is when an inner function remembers the variables from its outer function, even after the outer function has finished running.<br>
-<br>
-<p>they are not only in JS, but it means that functions <strong>enclose</strong> different variables that are there when the function is <strong>declared</strong>. And by <strong>enclosing</strong>, it means they <strong>remember</strong> them. So basically it means whenever you import or use a function, you <strong>also get by default</strong> all the <strong>scope</strong> where that function was created.</p><br>
-<br>
-<p>so if there is a variable at the root level, the function has access to that forever, until you never use that function again.<br>
-<pre><code>const name = "Olga";</p><br>
-<br>
-<p>export function sayHello() {<br>
-  console.log(name);<br>
-}<br>
-</code></pre></p><br>
-<br>
-<p>iIf someone imports and runs this, the function will still work because even if they provide an argument or not, it will actually look in the function scope and then in the global and find this variable.</p><br>
-<br>
-<p>Even if this variable is not present where this function is being called, as long as it’s present in the module — (name = "Olga" still shows).</p><br>
-<br>
-<p>Another way you could show this is if you return another function. Let’s say you actually create:<br>
-<pre><code>export function createSayHello() {<br>
-  const name = "Olga"; // now 'name' is in the scope of createSayHello</p><br>
-<br>
-<p>return function sayHello() {<br>
-    console.log(name);<br>
-  }<br>
-}<br>
-</code></pre><br>
-then<br>
-<pre><code>export function createSayHello() {<br>
-  const name = "Olga"; // now 'name' is in the scope of createSayHello</p><br>
-<br>
-<p>return function sayHello() {<br>
-    console.log(name);<br>
-  }<br>
-}<br>
-</code></pre><br>
-then:<br>
-<pre><code>const sayHelloOlga = createSayHello();<br>
-sayHelloOlga(); // still works ✅<br>
-</code></pre><br>
-so scope is basically whatever you see that is surrounded by curly brackets {}. So if I use sayHello outside here, it will still work.</p><br>
-<br>
-<p>Let’s rewrite the full example again just to make it clearer:<br>
-<pre><code>export function createSayHello() {<br>
-  // 'name' was enclosed by sayHello<br>
-  const name = "Olga";</p><br>
-<br>
-<p>return function sayHello() {<br>
-    console.log(name);<br>
-  };<br>
-}</p><br>
-<br>
-<p>const sayHelloOlga = createSayHello();<br>
-sayHelloOlga(); // still works<br>
-</code></pre><br>
-i would get no <strong>exception</strong>, even if in the <strong>scope I do not have a name</strong>. So the function is using a variable called name. it is not present in this global scope. however, because the function was created in this scope, it has access to this variable.</p><br>
-<br>
-<p>so that is <strong>closure</strong> — because we can say that name was enclosed by sayHello.<br>
-you do not <strong>only get the function — you get the whole scope</strong>, the whole lexical environment 🌍</p><br>
-<br>
-<p>- used for data privacy, stateful functions, and async logic.</p><br>
-<br>
-<h3>⚠️ what is the drawback of this?</h3><br>
-it puts a lot of <strong>pressure on memory</strong> 🧠 because everything that is in the scope is still referenced by this function as long as the function is being used.<br>
-<br>
-<p>so we cannot <strong>remove</strong> it from <strong>memory</strong>, we cannot release that memory by the <strong>garbage collection</strong> algorithm.</p><br>
-<br>
-<p>so basically, <strong>JavaScript cannot clean it up</strong> — it cannot get rid of anything that is in the <strong>closure</strong> scope of this function. and that means you put a lot of pressure on memory.</p><br>
-<br>
-<p>that is why traditionally we all know that JavaScript is not a super memory-efficient language — it actually needs a lot of <strong>RAM memory</strong> 💾.</p><br>
-<br>
-<h2>📐 types, interfaces, generics (typescript)</h2><br>
-<br>
-<h3>🧩 types</h3><br>
-<pre><code>let age: number = 25;<br>
-let name: string = Olga;<br>
-let isAdmin: boolean = true;<br>
-</code></pre><br>
-<h3>🧷 Interfaces</h3><br>
-<pre><code>interface User {<br>
-    id: number;<br>
-    name: string;<br>
-}<br>
-<br>
-<p>const user: User = {id: 1; name: "Olga" };<br>
-</code></pre></p><br>
-<br>
-<h3>🎁 Generics</h3><br>
-<pre><code>function wrapInArray<T>(value: T): T[] {<br>
-    return [value];<br>
-}<br>
-<br>
-<p>const nums = wrapInArray<number>(5); // [5]<br>
-</code></pre></p><br>
-<br>
-<h2>📦 objects, arrays, maps, sets</h2><br>
-<h3>Objects</h3><br>
-- Key-value pairs<br>
-<pre><code>const user = { name: "Alex", age: 22};<br>
-</code></pre><br>
-<h3>Arrays</h3><br>
-- Ordered collections<br>
-<pre><code>const nunbers = [1, 2, 3];<br>
-</code></pre><br>
-<h3>Maps</h3><br>
-- Key-value with any type keys<br>
-<pre><code>const maps = new Map();<br>
-map.set("a", 1);<br>
-</code></pre><br>
-<h3>Sets</h3><br>
-- Unique values only<br>
-<pre><code>const set = new Set([1, 2, 2, 3]) // {1, 2, 3}<br>
-</code></pre><br>
-<h2>🏛️ classes, inheritance, this</h2><br>
-<pre><code>class Animal {<br>
-    constructor(public name: string) {<br>
-        speak() {<br>
-            console.log(<code>${this.name} makes a sound</code>);<br>
-        }<br>
-    }<br>
-<br>
-<p>class Dog extends Animal {<br>
-        speak();<br>
-        console.log(<code>${this.name} barks</code>)<br>
-    }<br>
-}</p><br>
-<br>
-<p>const d = new Dog("Rex");<br>
-d.speak(); // Rex barks<br>
-</code></pre></p><br>
-<br>
-<p><strong>this</strong> keyword<br>
-- refers to the current context(object, function or global)<br>
-- arrow function don't have their own <strong>this</strong></p><br>
-<br>
-<h2>common gotchas & tricks</h2><br>
-❌ Don’t use == → use === for strict equality<br>
-✅ Use ?. (optional chaining) to safely access properties<br>
-✅ Use destructuring for cleaner code<br>
-✅ Prefer const by default, only use let when needed<br>
-❌ Avoid mutating objects/arrays directly – prefer immutability
+            <h1>⏳ javascript + typescript fundamentals</h1>
+
+            <h2>var vs let vs const</h2>
+            <ul>
+                <li>var: old, function scoped, hoisted</li>
+                <li>let: block-scoped, reassignable</li>
+                <li>const: block-scoped, not reassignable</li>
+            </ul>
+            <pre><code>var car = "car"; // function scoped
+let a = 5; // block scoped
+const b = 1; // cannot reassign</code></pre>
+
+            <h2>🌀 scope, hoisting, closures</h2>
+            <ul>
+                <li>scope = where variables live</li>
+                <li>hoisting = var + functions get "lifted" to top</li>
+                <li>closures = inner function "remember" outer variables</li>
+            </ul>
+
+            <h3>🧙‍♀️ Hoisting in JavaScript</h3>
+            <p><strong>definition:</strong> hoisting is when JS "remembers" all your variables & function declarations <strong>before</strong> it actually runs the code.</p>
+
+            <p><strong>memory allocation phase:</strong></p>
+            <ul>
+                <li>all <strong>var</strong>, <strong>function</strong>, and <strong>class</strong> declarations are stored in memory.</li>
+                <li>JS does this automatically, <strong>before</strong> executing line-by-line.</li>
+            </ul>
+
+            <p><strong>key insights:</strong></p>
+            <ul>
+                <li>only declarations are hoisted - not initializations</li>
+                <li><strong>let</strong> and <strong>const</strong> are hoisted too, but not accessible before declaration</li>
+                <li>function declarations are hoisted fully, function expressions are not.</li>
+            </ul>
+
+            <h2>🧳 Closures</h2>
+            <p>a <strong>closure</strong> is when an inner function remembers the variables from its outer function, even after the outer function has finished running.</p>
+
+            <p>they are not only in JS, but it means that functions <strong>enclose</strong> different variables that are there when the function is <strong>declared</strong>. And by <strong>enclosing</strong>, it means they <strong>remember</strong> them. So basically it means whenever you import or use a function, you <strong>also get by default</strong> all the <strong>scope</strong> where that function was created.</p>
+
+            <p>so if there is a variable at the root level, the function has access to that forever, until you never use that function again.</p>
+            <pre><code>const name = "Olga";
+
+export function sayHello() {
+  console.log(name);
+}</code></pre>
+
+            <p>If someone imports and runs this, the function will still work because even if they provide an argument or not, it will actually look in the function scope and then in the global and find this variable.</p>
+
+            <p>Even if this variable is not present where this function is being called, as long as it's present in the module — (name = "Olga" still shows).</p>
+
+            <p>Another way you could show this is if you return another function. Let's say you actually create:</p>
+            <pre><code>export function createSayHello() {
+  const name = "Olga"; // now 'name' is in the scope of createSayHello
+
+  return function sayHello() {
+    console.log(name);
+  }
+}</code></pre>
+
+            <p>then:</p>
+            <pre><code>const sayHelloOlga = createSayHello();
+sayHelloOlga(); // still works ✅</code></pre>
+
+            <p>so scope is basically whatever you see that is surrounded by curly brackets {}. So if I use sayHello outside here, it will still work.</p>
+
+            <p>Let's rewrite the full example again just to make it clearer:</p>
+            <pre><code>export function createSayHello() {
+  // 'name' was enclosed by sayHello
+  const name = "Olga";
+
+  return function sayHello() {
+    console.log(name);
+  };
+}
+
+const sayHelloOlga = createSayHello();
+sayHelloOlga(); // still works</code></pre>
+
+            <p>i would get no <strong>exception</strong>, even if in the <strong>scope I do not have a name</strong>. So the function is using a variable called name. it is not present in this global scope. however, because the function was created in this scope, it has access to this variable.</p>
+
+            <p>so that is <strong>closure</strong> — because we can say that name was enclosed by sayHello.
+            you do not <strong>only get the function — you get the whole scope</strong>, the whole lexical environment 🌍</p>
+
+            <p>used for data privacy, stateful functions, and async logic.</p>
+
+            <h3>⚠️ what is the drawback of this?</h3>
+            <p>it puts a lot of <strong>pressure on memory</strong> 🧠 because everything that is in the scope is still referenced by this function as long as the function is being used.</p>
+
+            <p>so we cannot <strong>remove</strong> it from <strong>memory</strong>, we cannot release that memory by the <strong>garbage collection</strong> algorithm.</p>
+
+            <p>so basically, <strong>JavaScript cannot clean it up</strong> — it cannot get rid of anything that is in the <strong>closure</strong> scope of this function. and that means you put a lot of pressure on memory.</p>
+
+            <p>that is why traditionally we all know that JavaScript is not a super memory-efficient language — it actually needs a lot of <strong>RAM memory</strong> 💾.</p>
+
+            <h2>📐 types, interfaces, generics (typescript)</h2>
+
+            <h3>🧩 types</h3>
+            <pre><code>let age: number = 25;
+let name: string = Olga;
+let isAdmin: boolean = true;</code></pre>
+
+            <h3>🧷 Interfaces</h3>
+            <pre><code>interface User {
+    id: number;
+    name: string;
+}
+
+const user: User = {id: 1; name: "Olga" };</code></pre>
+
+            <h3>🎁 Generics</h3>
+            <pre><code>function wrapInArray&lt;T&gt;(value: T): T[] {
+    return [value];
+}
+
+const nums = wrapInArray&lt;number&gt;(5); // [5]</code></pre>
+
+            <h2>📦 objects, arrays, maps, sets</h2>
+
+            <h3>Objects</h3>
+            <p>Key-value pairs</p>
+            <pre><code>const user = { name: "Alex", age: 22};</code></pre>
+
+            <h3>Arrays</h3>
+            <p>Ordered collections</p>
+            <pre><code>const numbers = [1, 2, 3];</code></pre>
+
+            <h3>Maps</h3>
+            <p>Key-value with any type keys</p>
+            <pre><code>const map = new Map();
+map.set("a", 1);</code></pre>
+
+            <h3>Sets</h3>
+            <p>Unique values only</p>
+            <pre><code>const set = new Set([1, 2, 2, 3]) // {1, 2, 3}</code></pre>
+
+            <h2>🏛️ classes, inheritance, this</h2>
+            <pre><code>class Animal {
+    constructor(public name: string) {}
+
+    speak() {
+        console.log(`${this.name} makes a sound`);
+    }
+}
+
+class Dog extends Animal {
+    speak() {
+        console.log(`${this.name} barks`);
+    }
+}
+
+const d = new Dog("Rex");
+d.speak(); // Rex barks</code></pre>
+
+            <p><strong>this</strong> keyword</p>
+            <ul>
+                <li>refers to the current context(object, function or global)</li>
+                <li>arrow function don't have their own <strong>this</strong></li>
+            </ul>
+
+            <h2>common gotchas & tricks</h2>
+            <p>❌ Don't use == → use === for strict equality<br>
+            ✅ Use ?. (optional chaining) to safely access properties<br>
+            ✅ Use destructuring for cleaner code<br>
+            ✅ Prefer const by default, only use let when needed<br>
+            ❌ Avoid mutating objects/arrays directly – prefer immutability</p>
         </main>
 
         <footer>
