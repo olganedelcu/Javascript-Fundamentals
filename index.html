@@ -65,11 +65,12 @@
         }
 
         .intro {
-            background: var(--card-bg);
-            padding: 3rem;
-            border-radius: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto 5rem;
+        }
+
+        .intro-content {
             margin-bottom: 4rem;
-            border: 1px solid var(--border);
         }
 
         .intro h2 {
@@ -86,10 +87,6 @@
             margin-bottom: 1rem;
         }
 
-        .intro p:last-child {
-            margin-bottom: 0;
-        }
-
         .section-title {
             font-size: 2rem;
             font-weight: 600;
@@ -98,68 +95,46 @@
         }
 
         .topics {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 5rem;
+            max-width: 800px;
+            margin: 0 auto 5rem;
         }
 
-        .topic-card {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 1.5rem;
-            border: 1px solid var(--border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
+        .topic-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.2s ease;
         }
 
-        .topic-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--text-secondary);
-            background: var(--hover-bg);
+        .topic-item:last-child {
+            border-bottom: none;
         }
 
-        .topic-card h3 {
+        .topic-item:hover {
+            padding-left: 1rem;
+        }
+
+        .topic-item a {
+            color: var(--text-primary);
+            text-decoration: none;
+            display: block;
+        }
+
+        .topic-item h3 {
             font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 1.25rem;
+            margin-bottom: 0.5rem;
             letter-spacing: -0.01em;
+            transition: color 0.2s;
         }
 
-        .topic-card ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .topic-card li {
-            color: var(--text-secondary);
-            margin: 0.75rem 0;
-            padding-left: 1.25rem;
-            position: relative;
-            font-size: 1rem;
-        }
-
-        .topic-card li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
+        .topic-item:hover h3 {
             color: var(--text-secondary);
         }
 
-        .topic-card a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            margin-top: 1.5rem;
+        .topic-item p {
+            color: var(--text-secondary);
             font-size: 1rem;
-            transition: opacity 0.2s;
-        }
-
-        .topic-card a:hover {
-            opacity: 0.7;
+            line-height: 1.6;
         }
 
         footer {
@@ -224,91 +199,65 @@
         </header>
 
         <section class="intro">
-            <h2>✨ What this is</h2>
-            <p>A clean and simple guide to help you revise <strong>JavaScript</strong>, <strong>TypeScript</strong>, and modern frontend/backend fundamentals - from the <strong>basics</strong> to the more <strong>advanced</strong> topics.</p>
-            <p>You'll find bite-sized explanations, easy examples, and interview-style questions. No fluff. No overwhelm. Just practical stuff.</p>
+            <div class="intro-content">
+                <h2>✨ What this is</h2>
+                <p>A clean and simple guide to help you revise <strong>JavaScript</strong>, <strong>TypeScript</strong>, and modern frontend/backend fundamentals - from the <strong>basics</strong> to the more <strong>advanced</strong> topics.</p>
+                <p>You'll find bite-sized explanations, easy examples, and interview-style questions. No fluff. No overwhelm. Just practical stuff.</p>
+            </div>
+
+            <h2 class="section-title">📚 What's Inside?</h2>
+
+            <div class="topics">
+                <div class="topic-item">
+                    <a href="javascript-primitives.html">
+                        <h3>🧠 JavaScript Primitives</h3>
+                        <p>All 7 primitive data types, immutability & pass-by-value behavior, primitive vs object comparison, type coercion & truthiness</p>
+                    </a>
+                </div>
+
+                <div class="topic-item">
+                    <a href="javascript-fundamentals.html">
+                        <h3>⏳ JavaScript + TypeScript Fundamentals</h3>
+                        <p>var vs let vs const, scope, hoisting, closures, types, interfaces, generics, classes, inheritance, this keyword</p>
+                    </a>
+                </div>
+
+                <div class="topic-item">
+                    <a href="async-promises.html">
+                        <h3>⚡ Async & Promises</h3>
+                        <p>Is JavaScript synchronous? How promises actually work, async/await explained simply, pure functions & functional programming</p>
+                    </a>
+                </div>
+
+                <div class="topic-item">
+                    <a href="npm-dependencies.html">
+                        <h3>📦 NPM & Dependencies</h3>
+                        <p>What is npm? How package.json works, dependencies vs devDependencies, common npm commands</p>
+                    </a>
+                </div>
+
+                <div class="topic-item">
+                    <a href="frontend-performance.html">
+                        <h3>🚀 Frontend Performance Optimization</h3>
+                        <p>Storage options (cookies, localStorage), bundle compression & minification, code splitting & lazy loading, XSS attacks & security</p>
+                    </a>
+                </div>
+
+                <div class="topic-item">
+                    <a href="typescript-advanced.html">
+                        <h3>🔷 TypeScript Advanced Concepts</h3>
+                        <p>Generic functions in TypeScript, as const vs normal const, type vs interface, type guards & union types</p>
+                    </a>
+                </div>
+
+                <div class="topic-item">
+                    <a href="debouncing.html">
+                        <h3>⚙️ Debouncing</h3>
+                        <p>What is debouncing & why use it, preventing unnecessary API calls, real-world use cases, search bars, resize events</p>
+                    </a>
+                </div>
+            </div>
         </section>
-
-        <h2 class="section-title">📚 What's Inside?</h2>
-
-        <div class="topics">
-            <div class="topic-card">
-                <h3>🧠 JavaScript Primitives</h3>
-                <ul>
-                    <li>All 7 primitive data types</li>
-                    <li>Immutability & pass-by-value behavior</li>
-                    <li>Primitive vs object comparison</li>
-                    <li>Type coercion & truthiness</li>
-                </ul>
-                <a href="javascript-primitives.html">Read more →</a>
-            </div>
-
-            <div class="topic-card">
-                <h3>⏳ JavaScript + TypeScript Fundamentals</h3>
-                <ul>
-                    <li>var vs let vs const</li>
-                    <li>Scope, hoisting, closures</li>
-                    <li>Types, interfaces, generics</li>
-                    <li>Classes, inheritance, `this` keyword</li>
-                </ul>
-                <a href="javascript-fundamentals.html">Read more →</a>
-            </div>
-
-            <div class="topic-card">
-                <h3>⚡ Async & Promises</h3>
-                <ul>
-                    <li>Is JavaScript synchronous?</li>
-                    <li>How promises actually work</li>
-                    <li>`async/await` explained simply</li>
-                    <li>Pure functions & functional programming</li>
-                </ul>
-                <a href="async-promises.html">Read more →</a>
-            </div>
-
-            <div class="topic-card">
-                <h3>📦 NPM & Dependencies</h3>
-                <ul>
-                    <li>What is npm?</li>
-                    <li>How package.json works</li>
-                    <li>Dependencies vs devDependencies</li>
-                    <li>Common npm commands</li>
-                </ul>
-                <a href="npm-dependencies.html">Read more →</a>
-            </div>
-
-            <div class="topic-card">
-                <h3>🚀 Frontend Performance Optimization</h3>
-                <ul>
-                    <li>Storage options (cookies, localStorage)</li>
-                    <li>Bundle compression & minification</li>
-                    <li>Code splitting & lazy loading</li>
-                    <li>XSS attacks & security</li>
-                </ul>
-                <a href="frontend-performance.html">Read more →</a>
-            </div>
-
-            <div class="topic-card">
-                <h3>🔷 TypeScript Advanced Concepts</h3>
-                <ul>
-                    <li>Generic functions in TypeScript</li>
-                    <li>`as const` vs normal const</li>
-                    <li>Type vs interface</li>
-                    <li>Type guards & union types</li>
-                </ul>
-                <a href="typescript-advanced.html">Read more →</a>
-            </div>
-
-            <div class="topic-card">
-                <h3>⚙️ Debouncing</h3>
-                <ul>
-                    <li>What is debouncing & why use it</li>
-                    <li>Preventing unnecessary API calls</li>
-                    <li>Real-world use cases</li>
-                    <li>Search bars, resize events</li>
-                </ul>
-                <a href="debouncing.html">Read more →</a>
-            </div>
-        </div>
 
         <footer>
             <h3>💡 How to Use This</h3>
