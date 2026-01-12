@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Primitives | Software Engineering Interview Guide</title>
+    <link rel="stylesheet" href="assets/css/page-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-name"><a href="index.html">Software Engineering Interview Guide</a></h1>
+            <p class="project-tagline">A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <main class="main-content">
+            <h1>🧠 JavaScript Primitives</h1><br>
+<br>
+<h2>👋 introduction</h2><br>
+<br>
+<p>a <strong>primitive</strong> is a value that’s <strong>not an object</strong>.  <br>
+it’s the simple stuff: you can store it, pass it around, compare it, or print it.</p><br>
+<br>
+<p>primitives are <strong>immutable</strong> — you don’t change their internal value, you just create a new one.</p><br>
+<br>
+<p>---</p><br>
+<br>
+<h2>🔢 the 7 primitive data types</h2><br>
+<br>
+<p>---</p><br>
+<br>
+<h3>1. <strong>string</strong></h3><br>
+used for text: usernames, messages, urls, etc.<br>
+<br>
+<pre><code>const raw = "  olga.2002  ";<br>
+const username = raw.trim().toLowerCase(); <br>
+// removes extra spaces & converts to lowercase<br>
+<br>
+<p>console.log("5" + 1); // '51' (string + number = string)<br>
+console.log("5" - 1); // 4 (js converts string to number)<br>
+</code></pre></p><br>
+<br>
+<h3>2. <strong>number</strong></h3><br>
+<br>
+<p>integers and decimals. used for prices, lists number, percentanges, maths operations...</p><br>
+<br>
+<pre><code>const grades = [9, 10, 5.9]<br>
+const sum = grades.reduce((sum, grades) => {sum + grades, 0})<br>
+</code></pre><br>
+<br>
+<h3>3. <strong>boolean</strong></h3><br>
+just true or false. <br>
+used for permissions, toggles, flags, "is this valid?"<br>
+<br>
+<pre><code>const email = "olganedelcuam@gmail.com";<br>
+const hasAt = email.include("@");<br>
+const hasDot = email.slipt("@")[1].include(".");<br>
+<br>
+<p>const isValidEmail = hasAt && hasDot;<br>
+if (!isValidEmail) console.log("It is not a valid email")<br>
+</code></pre></p><br>
+<br>
+<p>Truthiness(super practical):<br>
+<pre><code>const input = ""<br>
+if(!input) = console.log("disable submit button");<br>
+</code></pre></p><br>
+<br>
+<h3>4. <strong>undefined</strong></h3><br>
+means "not assigned" or "does not exit here".<br>
+<br>
+<pre><code>const config = { theme: "dark"};<br>
+const lang = config.language; // undefined<br>
+console.log(lang ?? "en") // fallback to "en"<br>
+</code></pre><br>
+<br>
+<h3>5. <strong>null</strong></h3><br>
+"intentionally empty" - you are saying "this is empty on purpose".<br>
+<br>
+<pre><code>let selectedUserId = 42;<br>
+<br>
+<p>// later user clear selection <br>
+selectedUserId = null;</p><br>
+<br>
+<p>if (selectedUserID === null) console.log("No user selected");<br>
+</code></pre></p><br>
+<br>
+<h3>6. <strong>bigint</strong></h3><br>
+used for really big numbers (like massive IDs, ledgers).<br>
+<br>
+<pre><code>const id = 12234678765432567654n; <br>
+const next = id + 1n; <br>
+<br>
+<p>console.log(next); // outcome: 12234678765432567655n<br>
+</code></pre></p><br>
+<br>
+<h3>7. <strong>symbol</strong></h3><br>
+used for unique identifiers - often in libraries to avoid name collisions, used for metadata - avoiding clashes with other code.<br>
+<br>
+<pre><code>const internalId = Symbol("internalId"); <br>
+<br>
+<p>const user = { name: "Ana" };<br>
+user[internalId] = "x9a-23";</p><br>
+<br>
+<p>console.log(user.internalId); // undefined<br>
+console.log(user[internalId]); // "x9a-23"<br>
+</code></pre></p><br>
+<br>
+<h3>8. <strong>primitive vs object</strong></h3><br>
+primitives behave like values <br>
+<br>
+<pre><code>let a = "hello";<br>
+let b = a;<br>
+b = "bye";<br>
+<br>
+<p>console.log(a) // "hello"<br>
+console.log(b) // "bye"<br>
+</code></pre><br>
+🔸objects behave like references:<br>
+<pre><code>let a = { msg: "hello" };<br>
+let b = a;<br>
+b.msg = "bye";</p><br>
+<br>
+<p>console.log(a.msg) // "bye"</p><br>
+<br>
+<p></code></pre><br>
+<h2>type coercion</h2><br>
+cheat sheet for checking types:</p><br>
+<br>
+<pre><code>typeof "x" // "string" <br>
+typeof 10 // "number"<br>
+typeof true // "boolean" <br>
+typeof undefined // "undefined" <br>
+typeof 10n // "bigint"  <br>
+typeof Symbol() // "symbol" <br>
+typeof null // "object" 🤯 (yes, legacy js bug)<br>
+</code></pre><br>
+<br>
+<p>✅ up next: <a href="async-promises.md">async-promises.md</a> → promises, async/await, and all that jazz</p>
+        </main>
+
+        <footer>
+            <div class="social-links">
+                <a href="https://linkedin.com/in/olganedelcu/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/olganedelcu" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                </a>
+                <a href="https://olgaconstantina.hashnode.dev" target="_blank" rel="noopener noreferrer" aria-label="Hashnode">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.351 8.019l-6.37-6.37a5.63 5.63 0 0 0-7.962 0l-6.37 6.37a5.63 5.63 0 0 0 0 7.962l6.37 6.37a5.63 5.63 0 0 0 7.962 0l6.37-6.37a5.63 5.63 0 0 0 0-7.962zM12 15.953a3.953 3.953 0 1 1 0-7.906 3.953 3.953 0 0 1 0 7.906z"/>
+                    </svg>
+                </a>
+                <a href="https://medium.com/@olganedelcuam" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                    </svg>
+                </a>
+            </div>
+            <p>Made with ❤️ by Olga Nedelcu</p>
+        </footer>
+    </div>
+</body>
+</html>

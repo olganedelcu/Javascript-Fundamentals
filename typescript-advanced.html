@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typescript Advanced | Software Engineering Interview Guide</title>
+    <link rel="stylesheet" href="assets/css/page-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-name"><a href="index.html">Software Engineering Interview Guide</a></h1>
+            <p class="project-tagline">A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <main class="main-content">
+            <h3>What is a generic function in TS and can you write one?</h3><br>
+<br>
+<p>🔁 a generic function is a way to write code that is type-flexible —<br>
+without using any.</p><br>
+<br>
+<p>⚙️ meaning: you can provide not only regular arguments, but also <strong>typed arguments</strong> — and the function still works for different data types.</p><br>
+<br>
+<pre><code>function myNewFunction<T>(one: T): T {<br>
+  return one;<br>
+}<br>
+</code></pre><br>
+💡 here, T is the generic type argument.<br>
+we can call this function like:<br>
+<pre><code>const result = myNewFunction<number>(5);<br>
+</code></pre><br>
+✅ and now result is inferred to be of type number.<br>
+<br>
+<p>🛑 but if you try:<br>
+<pre><code>const result = myNewFunction<number>("string");<br>
+</code></pre><br>
+❌ you get an <strong>error</strong> — because <strong>"string" is not a number, and TS catches that</strong>.</p><br>
+<br>
+<p>📦 that's why they’re called <strong>generic functions</strong> — you declare a type variable like T,<br>
+and then use it consistently across parameters and return types.<br>
+this helps you reuse logic, without sacrificing type safety.</p><br>
+<br>
+<p>#### ❓ what is an as const in typescript? how is it different from normal const?</p><br>
+<br>
+<p>🛡️ when you use as const, you are telling typescript to treat the entire object as deeply immutable.<br>
+🔒 this means you cannot modify any part of it — not even nested properties.<br>
+<pre><code>const config = {<br>
+    host: "whastsf";<br>
+    port:45 ;<br>
+    auth: {<br>
+        client: "ad",<br>
+    }<br>
+} as const;<br>
+</code></pre><br>
+if you try<br>
+<pre><code>config.host = "whatever"; // ❌ not possible<br>
+config.auth.client = "whatever"; // ❌ we can not change it<br>
+</code></pre><br>
+you will get an error.</p><br>
+<br>
+<p>📦 every nested property becomes immutable.</p><br>
+<br>
+<p>💬 in js, you could also freeze the object:<br>
+<pre><code>Object.freeze(config);<br>
+</code></pre><br>
+but ⚠️ this only works at runtime — and it only freezes the first level,<br>
+not the nested ones.</p><br>
+<br>
+<p>🛠️ as const is evaluated at build time, not runtime - it’s a typescript-only tool for locking objects.</p><br>
+<br>
+<h3>What is the difference between type and interface in Typescript? When would you use one or the other</h3><br>
+<br>
+<p>we could interchange both for most part, the only difference at build time interfaces can be <strong>merged</strong>, types must be <strong>unique</strong>.</p><br>
+<br>
+<p>this means that you can declare <strong>the same interface multiple times</strong>, and TS will <strong>merge</strong> them automatically.</p><br>
+<br>
+<p>but if you declare the <strong>same type name twice</strong>, it will throw an <strong>error</strong>.</p><br>
+<br>
+<p>💡 so in a <strong>codebase</strong>, you usually go for one of them and stick with it for <strong>consistency</strong>.</p><br>
+<br>
+<p>#### when use them?<br>
+if you're building a library, where you want people to extend certain types (e.g. Express.js with Request object),<br>
+it's better to use an <strong>interface</strong> — and TS will merge them behind the scenes if a person expands that interface.</p><br>
+<br>
+<p>i usually use type to define domain entities — e.g. ecommerce Product, Price, etc and use interface for auxiliary shapes like:</p><br>
+<br>
+<p>- <strong>props</strong> of a React component<br>
+- <strong>input</strong> params of a function</p><br>
+<br>
+<p>#### What is a type guard in TS? When use it<br>
+it's a way of writing a function that <strong>filters</strong> or guards a <strong>specific type</strong> from <strong>a union type</strong>.<br>
+<pre><code>type Fruit = Pineapple | Banana;<br>
+</code></pre><br>
+you can write a function like:<br>
+<pre><code>function isPineapple(fruit: Fruit): fruit is Pineapple {<br>
+  return (fruit as Pineapple).spiky !== undefined;<br>
+}<br>
+</code></pre><br>
+this allows you to <strong>narrow down</strong> the type safely.<br>
+so inside that condition, TS knows you’re working with a <strong>Pineapple</strong> —<br>
+and you get <strong>autocompletion</strong>, type safety, and error checking.<br>
+use it whenever you’re dealing with <strong>union types</strong>, and you need to work with one specific subtype.</p><br>
+<br>
+
+        </main>
+
+        <footer>
+            <div class="social-links">
+                <a href="https://linkedin.com/in/olganedelcu/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/olganedelcu" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                </a>
+                <a href="https://olgaconstantina.hashnode.dev" target="_blank" rel="noopener noreferrer" aria-label="Hashnode">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.351 8.019l-6.37-6.37a5.63 5.63 0 0 0-7.962 0l-6.37 6.37a5.63 5.63 0 0 0 0 7.962l6.37 6.37a5.63 5.63 0 0 0 7.962 0l6.37-6.37a5.63 5.63 0 0 0 0-7.962zM12 15.953a3.953 3.953 0 1 1 0-7.906 3.953 3.953 0 0 1 0 7.906z"/>
+                    </svg>
+                </a>
+                <a href="https://medium.com/@olganedelcuam" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                    </svg>
+                </a>
+            </div>
+            <p>Made with ❤️ by Olga Nedelcu</p>
+        </footer>
+    </div>
+</body>
+</html>

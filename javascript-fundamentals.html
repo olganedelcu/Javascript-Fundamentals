@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javascript Fundamentals | Software Engineering Interview Guide</title>
+    <link rel="stylesheet" href="assets/css/page-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-name"><a href="index.html">Software Engineering Interview Guide</a></h1>
+            <p class="project-tagline">A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <main class="main-content">
+            <h1>⏳ javascript + typescript fundamentals</h1><br>
+<br>
+<h2>var vs let vs const</h2><br>
+- var: old, function scoped, hoisted<br>
+- let: block-scoped, reassignable<br>
+- cosnt: block-scoped, not reassignabe<br>
+<pre><code>var car = "car"; // function scoped<br>
+let a = 5; // block scoped<br>
+const b = 1; // cannot reassign <br>
+</code></pre><br>
+<br>
+<h2>🌀 scope, hoisting, closures</h2><br>
+- scope = where variables live<br>
+- hoisting = var + functions get "lifted" to top<br>
+- closures = inner function "remember" outer variables<br>
+<br>
+<p>#### 🧙‍♀️ Hoisting in JavaScript<br>
+##### definition<br>
+hoising is when JS "remembers" all your variables & function declarations <strong>before</strong> it actually runs the code.</p><br>
+<br>
+<p>###### memory allocation phase: <br>
+- all <strong>var</strong>, <strong>function</strong>, and <strong>class</strong> declarations are stored in memory. <br>
+- JS does this automatically, <strong>before</strong> executing line-by-line.</p><br>
+<br>
+<p>###### key insights: <br>
+- only declarations are hoisted -  not initializations<br>
+- <strong>let</strong> and <strong>const</strong> are hoisted too, but not accessible before declaration<br>
+- function declaration are hoisted fully, function expressions are not.</p><br>
+<br>
+<h2>🧳 Closures</h2><br>
+a <strong>closure</strong> is when an inner function remembers the variables from its outer function, even after the outer function has finished running.<br>
+<br>
+<p>they are not only in JS, but it means that functions <strong>enclose</strong> different variables that are there when the function is <strong>declared</strong>. And by <strong>enclosing</strong>, it means they <strong>remember</strong> them. So basically it means whenever you import or use a function, you <strong>also get by default</strong> all the <strong>scope</strong> where that function was created.</p><br>
+<br>
+<p>so if there is a variable at the root level, the function has access to that forever, until you never use that function again.<br>
+<pre><code>const name = "Olga";</p><br>
+<br>
+<p>export function sayHello() {<br>
+  console.log(name);<br>
+}<br>
+</code></pre></p><br>
+<br>
+<p>iIf someone imports and runs this, the function will still work because even if they provide an argument or not, it will actually look in the function scope and then in the global and find this variable.</p><br>
+<br>
+<p>Even if this variable is not present where this function is being called, as long as it’s present in the module — (name = "Olga" still shows).</p><br>
+<br>
+<p>Another way you could show this is if you return another function. Let’s say you actually create:<br>
+<pre><code>export function createSayHello() {<br>
+  const name = "Olga"; // now 'name' is in the scope of createSayHello</p><br>
+<br>
+<p>return function sayHello() {<br>
+    console.log(name);<br>
+  }<br>
+}<br>
+</code></pre><br>
+then<br>
+<pre><code>export function createSayHello() {<br>
+  const name = "Olga"; // now 'name' is in the scope of createSayHello</p><br>
+<br>
+<p>return function sayHello() {<br>
+    console.log(name);<br>
+  }<br>
+}<br>
+</code></pre><br>
+then:<br>
+<pre><code>const sayHelloOlga = createSayHello();<br>
+sayHelloOlga(); // still works ✅<br>
+</code></pre><br>
+so scope is basically whatever you see that is surrounded by curly brackets {}. So if I use sayHello outside here, it will still work.</p><br>
+<br>
+<p>Let’s rewrite the full example again just to make it clearer:<br>
+<pre><code>export function createSayHello() {<br>
+  // 'name' was enclosed by sayHello<br>
+  const name = "Olga";</p><br>
+<br>
+<p>return function sayHello() {<br>
+    console.log(name);<br>
+  };<br>
+}</p><br>
+<br>
+<p>const sayHelloOlga = createSayHello();<br>
+sayHelloOlga(); // still works<br>
+</code></pre><br>
+i would get no <strong>exception</strong>, even if in the <strong>scope I do not have a name</strong>. So the function is using a variable called name. it is not present in this global scope. however, because the function was created in this scope, it has access to this variable.</p><br>
+<br>
+<p>so that is <strong>closure</strong> — because we can say that name was enclosed by sayHello.<br>
+you do not <strong>only get the function — you get the whole scope</strong>, the whole lexical environment 🌍</p><br>
+<br>
+<p>- used for data privacy, stateful functions, and async logic.</p><br>
+<br>
+<h3>⚠️ what is the drawback of this?</h3><br>
+it puts a lot of <strong>pressure on memory</strong> 🧠 because everything that is in the scope is still referenced by this function as long as the function is being used.<br>
+<br>
+<p>so we cannot <strong>remove</strong> it from <strong>memory</strong>, we cannot release that memory by the <strong>garbage collection</strong> algorithm.</p><br>
+<br>
+<p>so basically, <strong>JavaScript cannot clean it up</strong> — it cannot get rid of anything that is in the <strong>closure</strong> scope of this function. and that means you put a lot of pressure on memory.</p><br>
+<br>
+<p>that is why traditionally we all know that JavaScript is not a super memory-efficient language — it actually needs a lot of <strong>RAM memory</strong> 💾.</p><br>
+<br>
+<h2>📐 types, interfaces, generics (typescript)</h2><br>
+<br>
+<h3>🧩 types</h3><br>
+<pre><code>let age: number = 25;<br>
+let name: string = Olga;<br>
+let isAdmin: boolean = true;<br>
+</code></pre><br>
+<h3>🧷 Interfaces</h3><br>
+<pre><code>interface User {<br>
+    id: number;<br>
+    name: string;<br>
+}<br>
+<br>
+<p>const user: User = {id: 1; name: "Olga" };<br>
+</code></pre></p><br>
+<br>
+<h3>🎁 Generics</h3><br>
+<pre><code>function wrapInArray<T>(value: T): T[] {<br>
+    return [value];<br>
+}<br>
+<br>
+<p>const nums = wrapInArray<number>(5); // [5]<br>
+</code></pre></p><br>
+<br>
+<h2>📦 objects, arrays, maps, sets</h2><br>
+<h3>Objects</h3><br>
+- Key-value pairs<br>
+<pre><code>const user = { name: "Alex", age: 22};<br>
+</code></pre><br>
+<h3>Arrays</h3><br>
+- Ordered collections<br>
+<pre><code>const nunbers = [1, 2, 3];<br>
+</code></pre><br>
+<h3>Maps</h3><br>
+- Key-value with any type keys<br>
+<pre><code>const maps = new Map();<br>
+map.set("a", 1);<br>
+</code></pre><br>
+<h3>Sets</h3><br>
+- Unique values only<br>
+<pre><code>const set = new Set([1, 2, 2, 3]) // {1, 2, 3}<br>
+</code></pre><br>
+<h2>🏛️ classes, inheritance, this</h2><br>
+<pre><code>class Animal {<br>
+    constructor(public name: string) {<br>
+        speak() {<br>
+            console.log(<code>${this.name} makes a sound</code>);<br>
+        }<br>
+    }<br>
+<br>
+<p>class Dog extends Animal {<br>
+        speak();<br>
+        console.log(<code>${this.name} barks</code>)<br>
+    }<br>
+}</p><br>
+<br>
+<p>const d = new Dog("Rex");<br>
+d.speak(); // Rex barks<br>
+</code></pre></p><br>
+<br>
+<p><strong>this</strong> keyword<br>
+- refers to the current context(object, function or global)<br>
+- arrow function don't have their own <strong>this</strong></p><br>
+<br>
+<h2>common gotchas & tricks</h2><br>
+❌ Don’t use == → use === for strict equality<br>
+✅ Use ?. (optional chaining) to safely access properties<br>
+✅ Use destructuring for cleaner code<br>
+✅ Prefer const by default, only use let when needed<br>
+❌ Avoid mutating objects/arrays directly – prefer immutability
+        </main>
+
+        <footer>
+            <div class="social-links">
+                <a href="https://linkedin.com/in/olganedelcu/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/olganedelcu" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                </a>
+                <a href="https://olgaconstantina.hashnode.dev" target="_blank" rel="noopener noreferrer" aria-label="Hashnode">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.351 8.019l-6.37-6.37a5.63 5.63 0 0 0-7.962 0l-6.37 6.37a5.63 5.63 0 0 0 0 7.962l6.37 6.37a5.63 5.63 0 0 0 7.962 0l6.37-6.37a5.63 5.63 0 0 0 0-7.962zM12 15.953a3.953 3.953 0 1 1 0-7.906 3.953 3.953 0 0 1 0 7.906z"/>
+                    </svg>
+                </a>
+                <a href="https://medium.com/@olganedelcuam" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                    </svg>
+                </a>
+            </div>
+            <p>Made with ❤️ by Olga Nedelcu</p>
+        </footer>
+    </div>
+</body>
+</html>

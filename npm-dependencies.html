@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Npm Dependencies | Software Engineering Interview Guide</title>
+    <link rel="stylesheet" href="assets/css/page-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-name"><a href="index.html">Software Engineering Interview Guide</a></h1>
+            <p class="project-tagline">A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <main class="main-content">
+            <h1>📦 npm & dependencies</h1><br>
+there are 2 files that show up in almost every JavaScript project:<br>
+<pre><code>package.json<br>
+package-lock.json<br>
+</code></pre><br>
+and then there is also a bunch of stuff under "dependences" and "devDependences"<br>
+<h3>📄 package.json</h3><br>
+this file tells us the key things about the project:<br>
+- name<br>
+- which packages it needs<br>
+- which scripts you can run(like <strong>npm run dev</strong>)<br>
+<br>
+<p>You'll usually see two important sections:<br>
+###### ✅ <strong>dependences</strong><br>
+these are the packages your project needs to run. <br>
+If you are using React, React will be listed here:<br>
+<pre><code>"dependencies": {<br>
+  "react": "^18.2.0",<br>
+  "axios": "^1.5.0"<br>
+}<br>
+</code></pre><br>
+Installed with:<br>
+<pre><code>npm install [package-name]<br>
+</code></pre></p><br>
+<br>
+<h3>🛠 "devDependencies"</h3><br>
+<br>
+<p>These are tools you only need while you're coding — like linters, bundlers, formatters.<br>
+<pre><code>"devDependencies": {<br>
+  "eslint": "^8.54.0",<br>
+  "vite": "^5.1.0"<br>
+}<br>
+</code></pre></p><br>
+<br>
+<p>Installed with:<br>
+<pre><code>npm install -D [package-name]<br>
+</code></pre><br>
+<h3>🔒 package-lock.json — the version freeze</h3></p><br>
+<br>
+<p>this file is created automatically when you install packages.</p><br>
+<br>
+<p>ot locks in the exact versions of all your dependencies (and their dependencies too).</p><br>
+<br>
+<p>why does that matter?</p><br>
+<br>
+<p>because different versions can behave differently. So when you share your project with someone else, this file makes sure everyone installs the exact same versions. No surprises.</p><br>
+<br>
+<p>yes, it can get big. yes, you should commit it.</p><br>
+<br>
+<h3>🛠 Common npm commands</h3><br>
+<br>
+<p>| command | what it does |<br>
+|---------|--------------|<br>
+| <code>npm install</code> | installs everything from package.json |<br>
+| <code>npm install [pkg]</code> | installs a specific package |<br>
+| <code>npm install -D [pkg]</code> | installs as a dev dependency |<br>
+| <code>npm run dev</code> | starts your dev server (like Vite or Next) |<br>
+| <code>npm run build</code> | builds your app for production |<br>
+| <code>npm run lint</code> | runs a linter (if set up) |<br>
+| <code>npm outdated</code> | shows outdated packages |<br>
+| <code>npm audit</code> | checks for security issues |<br>
+<h3>💬 Why do we need dependencies anyway?</h3></p><br>
+<br>
+<p>because we don’t want to build everything from scratch.<br>
+imagine writing your own router. or state manager. or HTTP client. 😅</p><br>
+<br>
+<p>dependencies are tools that make development faster and easier.</p><br>
+<br>
+<p>- want routing? → react-router-dom<br>
+- need animations? → framer-motion<br>
+- want type checking? → typescript<br>
+- fetch data? → axios or fetch</p><br>
+<br>
+<p>they save us time. And honestly, they make projects a lot more fun to build.</p><br>
+<br>
+<p>##### Bonus: what happens when you npm run build<br>
+when you run this command, npm looks into the scripts section of package.json and executes whatever’s written there.<br>
+<pre><code>"scripts": {<br>
+  "dev": "vite",<br>
+  "build": "vite build",<br>
+  "lint": "eslint ."<br>
+}<br>
+</code></pre></p><br>
+<br>
+<p>so <strong>npm run build</strong> usually means:<br>
+bundle everything, optimize it, minify the code, and get it ready for production.</p><br>
+<br>
+<p>#### 🧠 tl;dr</p><br>
+<br>
+<p>- <strong>package.json</strong> — tells npm what your project needs + what scripts it can run<br>
+- <strong>package-lock.json</strong> — makes sure everyone installs the exact same versions<br>
+- <strong>dependencies</strong> = required for the app to run<br>
+- <strong>devDependencies</strong> = required for you to build, test, or lint<br>
+- <strong>npm run</strong> = how you trigger custom scripts</p>
+        </main>
+
+        <footer>
+            <div class="social-links">
+                <a href="https://linkedin.com/in/olganedelcu/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                </a>
+                <a href="https://github.com/olganedelcu" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                </a>
+                <a href="https://olgaconstantina.hashnode.dev" target="_blank" rel="noopener noreferrer" aria-label="Hashnode">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.351 8.019l-6.37-6.37a5.63 5.63 0 0 0-7.962 0l-6.37 6.37a5.63 5.63 0 0 0 0 7.962l6.37 6.37a5.63 5.63 0 0 0 7.962 0l6.37-6.37a5.63 5.63 0 0 0 0-7.962zM12 15.953a3.953 3.953 0 1 1 0-7.906 3.953 3.953 0 0 1 0 7.906z"/>
+                    </svg>
+                </a>
+                <a href="https://medium.com/@olganedelcuam" target="_blank" rel="noopener noreferrer" aria-label="Medium">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                    </svg>
+                </a>
+            </div>
+            <p>Made with ❤️ by Olga Nedelcu</p>
+        </footer>
+    </div>
+</body>
+</html>
