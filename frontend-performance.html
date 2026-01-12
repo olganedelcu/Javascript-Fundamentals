@@ -14,236 +14,205 @@
         </header>
 
         <main class="main-content">
-            <p>✅ Cookies vs Local Storage vs Session Storage — Deep Dive</p><br>
-<br>
-<p>🍪 <strong>Cookies Storage</strong><br>
-Cookies have a strict limit in terms of storage — around <strong>4KB</strong>, which makes them suitable for small but critical pieces of data. One of the most powerful aspects of cookies is that they operate on both the <strong>server and client side</strong>. Every time you send an HTTP request (like visiting a route or fetching data), the browser includes the cookies automatically in the request headers. This behavior makes them perfect for <strong>authentication flows</strong>, particularly when you're working over HTTPS and using security flags like <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite</code>. This way, the token stored in the cookie is not accessible from JavaScript and is protected from XSS attacks.</p><br>
-<br>
-<p>Cookies are ideal for storing things like tokens, session identifiers, or anything that needs to be <strong>shared between the client and server seamlessly</strong>, without manually attaching it to every request. Because the browser handles this, they are extremely effective when you want <strong>automatic synchronization</strong> between client-server interactions.</p><br>
-<br>
-<p><strong>Key traits:</strong><br>
-- Auto-sent on every HTTP request (GET, POST, etc.)<br>
-- Lifespan can be explicitly defined using an expiration date<br>
-- Operates across tabs and sessions<br>
-- Stored in the browser under the application domain<br>
-- Limited size (~4KB)</p><br>
-<br>
-<p>🗂️ <strong>Local Storage</strong><br>
-LocalStorage, on the other hand, has a <strong>much higher storage limit</strong> (usually around <strong>5–10MB</strong>, depending on the browser). Unlike cookies, it is purely <strong>client-side</strong> and not sent with HTTP requests. It persists even after closing the browser, so it is ideal for storing <strong>application state</strong>, <strong>user preferences</strong>, or <strong>temporary data</strong> that you want to keep across sessions.</p><br>
-<br>
-<p>For instance, imagine your app has a user onboarding flow and you want to store which step the user is on. If they close the browser and return later, LocalStorage allows you to retrieve that information and <strong>resume exactly where they left off</strong>.</p><br>
-<br>
-<p><strong>Key traits:</strong><br>
-- Not sent with HTTP requests (not for auth)<br>
-- Lifespan: persists indefinitely unless cleared<br>
-- Scope: available to all tabs/windows of the same origin<br>
-- Larger storage limit (~5–10MB)</p><br>
-<br>
-<p>🕒 <strong>Session Storage</strong><br>
-SessionStorage is very similar to LocalStorage in terms of API (both use <code>setItem</code>, <code>getItem</code>, etc.), but it behaves differently: it is <strong>cleared when the tab or browser window is closed</strong>. It's <strong>scoped per tab</strong>, so if you open the same page in two tabs, each one will have a separate session storage.</p><br>
-<br>
-<p>SessionStorage is <strong>not used as much</strong>, but it's perfect for use cases like <strong>checkout pages</strong> or <strong>form inputs</strong>, where you don’t want the user to lose progress if the page reloads or something fails, but you also <strong>don’t want to persist that data forever</strong>. Since it’s automatically cleared, you don’t need to implement cleanup logic.</p><br>
-<br>
-<p><strong>Key traits:</strong><br>
-- Cleared when tab/window is closed<br>
-- Not shared across tabs<br>
-- Only available to scripts on the same page/session<br>
-- Great for sensitive or temporary data (e.g. form steps, OTPs)</p><br>
-<br>
-<p>---</p><br>
-<br>
-<p>Q2: 🧠 <strong>If you are setting up a new frontend application, what are some optimizations you would put in place to make it more performant?</strong></p><br>
-<br>
-<p>👷‍♀️ Let's assume this is a <strong>modern frontend React application</strong> using <strong>client-side rendering</strong> and something like <strong>Webpack</strong> or <strong>Vite</strong> as a module bundler.</p><br>
-<br>
-<h3>1. Polyfilling the Code (Backward Compatibility)</h3><br>
-In any frontend project, you’ll likely want to use <strong>modern JavaScript features</strong> (like async/await, spread operator, optional chaining, etc). But not all browsers support these features — especially older ones like <strong>Internet Explorer 11</strong>. So you need to <strong>polyfill</strong> your code.<br>
-<br>
-<p>💡 <strong>What is a polyfill?</strong> It’s a piece of code (usually a function or method) that provides modern functionality on older browsers that do not natively support it.</p><br>
-<br>
-<p>Here's how the process works:<br>
-- You define your <strong>target browsers</strong> (in <code>browserslist</code>)<br>
-- You analyze: does this browser support feature X?<br>
-- If not → <strong>replace</strong> or <strong>add</strong> a version of that feature that works in older JS.</p><br>
-<br>
-<p>Example: If the browser doesn’t support <code>Promise</code>, you might import a Promise polyfill like <code>core-js</code>.</p><br>
-<br>
-<p>📦 The tradeoff: yes, this <strong>increases the bundle size</strong>, but ensures the app runs on more devices, increasing accessibility.</p><br>
-<br>
-<pre><code>import 'core-js/features/promise';<br>
-import 'whatwg-fetch';<br>
-</code></pre><br>
-<br>
-<p>---</p><br>
-<br>
-<h3>2. Bundle Compression (Gzip/Brotli)</h3><br>
-Once your JavaScript is bundled together, you want to reduce the file size as much as possible before it’s sent over the network. Instead of sending a raw <code>.js</code> file, you send a <strong>compressed gzip or brotli file</strong>.<br>
-<br>
-<p>This can reduce file size by <strong>up to 70%</strong>, which has a <strong>huge impact on load time</strong>, especially for mobile users or slow networks.</p><br>
-<br>
-<p>You use <strong>content negotiation</strong> (via the HTTP headers) to tell the browser: "hey, this is a gzip file", and then it automatically decompresses it and executes it like normal.</p><br>
-<br>
-<p>In Webpack:<br>
-<pre><code>const CompressionPlugin = require('compression-webpack-plugin');</p><br>
-<br>
-<p>module.exports = {<br>
-  plugins: [<br>
-    new CompressionPlugin({<br>
-      algorithm: 'gzip',<br>
-    }),<br>
-  ],<br>
-};<br>
-</code></pre></p><br>
-<br>
-<p>---</p><br>
-<br>
-<h3>3. Uglification and Minification</h3><br>
-This is a classic optimization. You take human-readable JS and remove all <strong>unnecessary characters</strong>:<br>
-- newlines<br>
-- whitespace<br>
-- long variable names<br>
-<br>
-<pre><code>const userLoggedIn = true;<br>
-</code></pre><br>
-gets transformed into:<br>
-<pre><code>let a=!0;<br>
-</code></pre><br>
-<br>
-<p>This process makes your file smaller, but unreadable — this is why you also generate <strong>source maps</strong>, so you can still debug your original code when an error happens in production.</p><br>
-<br>
-<p>Without source maps:<br>
-- You get an error on line 1 of <code>main.min.js</code> — useless.</p><br>
-<br>
-<p>With source maps:<br>
-- You know the original line of code in <code>auth.js:45</code> that caused it.</p><br>
-<br>
-<p>---</p><br>
-<br>
-<h3>4. Code Splitting (Load What You Need)</h3><br>
-Instead of shipping <strong>all</strong> your JavaScript upfront, split your code into logical chunks and load them <strong>on-demand</strong>.<br>
-<br>
-<p>Example:<br>
-<pre><code>const CheckoutPage = React.lazy(() => import('./Checkout'));<br>
-</code></pre></p><br>
-<br>
-<p>This is useful because on initial page load, you might not need the checkout page at all. So don’t load it. Instead, lazy-load it when the user navigates to it.</p><br>
-<br>
-<p>Webpack/Vite will handle the chunking for you.</p><br>
-<br>
-<p>---</p><br>
-<br>
-<h3>5. Tree Shaking (Eliminate Dead Code)</h3><br>
-If you're using <strong>ES6 static imports</strong>, Webpack or Vite can analyze your code and remove unused parts of a library — known as <strong>tree shaking</strong>. <br>
-<br>
-<p>Example:<br>
-<pre><code>import { Button } from 'my-ui-library';<br>
-</code></pre><br>
-If you don’t use <code>Modal</code>, <code>Tooltip</code>, etc. — those won’t be bundled so performance is as good as possible.</p><br>
-<br>
-<p>💡 Does not work well with <code>require()</code> or dynamic imports.</p><br>
-<br>
-<p>---</p><br>
-<br>
-<h3>6. Dependency Graph</h3><br>
-Webpack builds a <strong>dependency graph</strong> by analyzing your <code>import</code> statements starting from the <code>entry</code> file (usually <code>index.js</code>). It forms a <strong>tree structure</strong> of modules and figures out what is needed, what can be bundled together, and what can be eliminated.<br>
-<br>
-<p>This ensures optimal bundling and helps during code splitting and tree shaking.</p><br>
-<br>
-<p>---</p><br>
-<br>
-<h3>CSS and JS is?</h3><br>
-used together for building frontend.<br>
-CSS handles styles, JS handles interactivity.<br>
-<br>
-<p>#### use cases.<br>
-- css-in-js = dynamic styles.<br>
-c- ss styles when certain state changes (like when clicking a button).<br>
-- you could do it with classes, but it's faster and more powerful with css-in-js.<br>
-- you write css inside js files, and then tools like webpack inject them into the html DOM at runtime.<br>
-- this lets you do dynamic styling — styles based on props, themes, component state.</p><br>
-<br>
-<p>#### disadvantages.<br>
-- because styles are in js files,<br>
-you can’t extract them into static css files.<br>
-- so they are not cacheable.<br>
-- the browser can’t store them between visits.<br>
-- user has to re-download them every time.<br>
-also makes styles harder to debug,<br>
-- because they’re injected dynamically, class names are hashed,<br>
-and don’t show clear line numbers like regular .css files.</p><br>
-<br>
-<p><h3>⚙️ 6. Image & Asset Optimization</h3><br>
-##### Frontend apps with very huge images, how would we optimize for performance?<br>
-- Dimensions matter: <br>
-- Resizing to only what's needed<br>
-- Using <strong>WebP</strong> over PNG/JPEG<br>
-- Stripping metadata: once we have the dimensions, we look into compression and image optimization toools that can remove metadata from the image or modify what they call the color space to include less colors. The image looks a bit less vibrant but it contains less data so its smaller.<br>
-- Hosting on <strong>CDN</strong> with caching headers and have direct caching polices.<br>
-- Enable <strong>lazy loading</strong> (<code>loading="lazy"</code>) for offscreen images, load on scroll - load images as user scrolls.<br>
-- Use <code>srcSet</code> attribute to ship different images depending on the viewport on devide. Modern CDNs makes it by default.<br>
-- Specify <code>width</code> and <code>height</code> to pnot have accumulative layer shift.</p><br>
-<br>
-<p>---</p><br>
-<br>
-<h2>Performance challenges in frontend </h2><br>
-<h3>How do you manage code quality in a large scale frontend application? What tools and practices do you use?</h3><br>
-<br>
-<p>🧹 for code quality, i would probably start with a <strong>linter</strong>, so you want to basically catch small issues and make sure everybody writes the same code.<br>
-🎨 you’re gonna have <strong>prettier</strong>, maybe <strong>eslint</strong> set up, and if you're using typescript, have the <strong>tslint</strong> set up.<br>
-🧠 this takes off a lot of work and communication because everybody writes code in the same style.</p><br>
-<br>
-<p>🧪 after that, you do want to have a layer of unit tests, and ideally some <strong>E2E</strong> tests for sure.<br>
-🔍 and finally, i would have something like a dependency scan.</p><br>
-<br>
-<p>-  in the linter, have something that scans for <strong>a11y</strong>, which stands for accessibility.</p><br>
-<br>
-<p>🧰 so now we’re taking care of <strong>code quality</strong>, <strong>style</strong>, <strong>accessibility</strong>, <strong>testing</strong>, and <strong>dependencies</strong> (since node modules especially can be vulnerable to different attacks).</p><br>
-<br>
-<p>📊 finally, have something like <strong>lighthouse</strong> or <strong>sentry</strong> in your pipeline —<br>
-📈 they tell you how your <strong>core web vitals</strong> change and how web performance changes over time.<br>
-⚠️ so if we make any mistake, like adding a big image or extra fonts, we <strong>immediately see the effect</strong> and fix it early on.</p><br>
-<br>
-<h3>❓ what is an xss attack and how do you make sure that frontend apps are not vulnerable to those attacks?</h3><br>
-<br>
-<p>💥 xss = cross-site scripting.<br>
-👾 the attacker persists some javascript code in our database.<br>
-🌐 then users, because they fetch from our database, end up running that code in their browser.</p><br>
-<br>
-<h3>❓ what are micro-frontends? when would you use frontend architecture?</h3><br>
-🧩 in a frontend, we usually have different components — header, body of the page, checkout info, etc.<br>
-👥 this works pretty fine when we’re in small teams, but as we <strong>scale</strong>, it becomes really hard to contribute to a <strong>single frontend monolith</strong>.<br>
-<br>
-<p>⚙️ so what we can do is split those individual parts into different applications.<br>
-🧱 and then we have a <strong>shell</strong> — kind of like a container — that puts them all together.<br>
-🔐 this shell can be responsible for things like <strong>authentication</strong>, and <strong>shared state</strong>.</p><br>
-<br>
-<p>🚀 now we can deploy the <strong>different apps independently</strong>,<br>
-so it allows us to <strong>separate</strong> development teams,<br>
-and make development much faster and more modular.</p><br>
-<br>
-<p>⚠️ BUT you pay t<strong>he price of complexity</strong> —<br>
-you need more complex tooling to make something like this happen (routing, shared packages, auth sync, etc).</p><br>
-<br>
-<p>#### 🧠 when does it make sense?<br>
-🧱 when we already have a big monolithic app,<br>
-and we’re thinking of <strong>breaking it into micro-frontends</strong>.</p><br>
-<br>
-<p>👥 micro-frontends are mostly good when <strong>splitting</strong> organisations.<br>
-you need to split people into teams that can work <strong>independently</strong>.</p><br>
-<br>
-<p>🔗 but because we’re distributing our system,<br>
-you always pay the price for that — especially things like:</p><br>
-<br>
-<p>🤯 sharing state<br>
-🧪 integration testing<br>
-🔀 coordination between teams<br>
-✅ so when we need technology to <strong>enable parallel work without cross-dependencies</strong>, micro-frontends can help.</p><br>
-<br>
-<p>🚫 but if you’re building smaller websites or simple apps, there’s no real reason to overcomplicate —<br>
-just stick with a regular monolithic frontend setup.</p><br>
-<br>
-<br>
+            <h1>🚀 Frontend Performance Optimization</h1>
 
+            <h2>✅ Cookies vs Local Storage vs Session Storage — Deep Dive</h2>
+
+            <h3>🍪 Cookies Storage</h3>
+            <p>Cookies have a strict limit in terms of storage — around <strong>4KB</strong>, which makes them suitable for small but critical pieces of data. One of the most powerful aspects of cookies is that they operate on both the <strong>server and client side</strong>. Every time you send an HTTP request (like visiting a route or fetching data), the browser includes the cookies automatically in the request headers. This behavior makes them perfect for <strong>authentication flows</strong>, particularly when you're working over HTTPS and using security flags like <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite</code>. This way, the token stored in the cookie is not accessible from JavaScript and is protected from XSS attacks.</p>
+
+            <p>Cookies are ideal for storing things like tokens, session identifiers, or anything that needs to be <strong>shared between the client and server seamlessly</strong>, without manually attaching it to every request. Because the browser handles this, they are extremely effective when you want <strong>automatic synchronization</strong> between client-server interactions.</p>
+
+            <p><strong>Key traits:</strong></p>
+            <ul>
+                <li>Auto-sent on every HTTP request (GET, POST, etc.)</li>
+                <li>Lifespan can be explicitly defined using an expiration date</li>
+                <li>Operates across tabs and sessions</li>
+                <li>Stored in the browser under the application domain</li>
+                <li>Limited size (~4KB)</li>
+            </ul>
+
+            <h3>🗂️ Local Storage</h3>
+            <p>LocalStorage, on the other hand, has a <strong>much higher storage limit</strong> (usually around <strong>5–10MB</strong>, depending on the browser). Unlike cookies, it is purely <strong>client-side</strong> and not sent with HTTP requests. It persists even after closing the browser, so it is ideal for storing <strong>application state</strong>, <strong>user preferences</strong>, or <strong>temporary data</strong> that you want to keep across sessions.</p>
+
+            <p>For instance, imagine your app has a user onboarding flow and you want to store which step the user is on. If they close the browser and return later, LocalStorage allows you to retrieve that information and <strong>resume exactly where they left off</strong>.</p>
+
+            <p><strong>Key traits:</strong></p>
+            <ul>
+                <li>Not sent with HTTP requests (not for auth)</li>
+                <li>Lifespan: persists indefinitely unless cleared</li>
+                <li>Scope: available to all tabs/windows of the same origin</li>
+                <li>Larger storage limit (~5–10MB)</li>
+            </ul>
+
+            <h3>🕒 Session Storage</h3>
+            <p>SessionStorage is very similar to LocalStorage in terms of API (both use <code>setItem</code>, <code>getItem</code>, etc.), but it behaves differently: it is <strong>cleared when the tab or browser window is closed</strong>. It's <strong>scoped per tab</strong>, so if you open the same page in two tabs, each one will have a separate session storage.</p>
+
+            <p>SessionStorage is <strong>not used as much</strong>, but it's perfect for use cases like <strong>checkout pages</strong> or <strong>form inputs</strong>, where you don't want the user to lose progress if the page reloads or something fails, but you also <strong>don't want to persist that data forever</strong>. Since it's automatically cleared, you don't need to implement cleanup logic.</p>
+
+            <p><strong>Key traits:</strong></p>
+            <ul>
+                <li>Cleared when tab/window is closed</li>
+                <li>Not shared across tabs</li>
+                <li>Only available to scripts on the same page/session</li>
+                <li>Great for sensitive or temporary data (e.g. form steps, OTPs)</li>
+            </ul>
+
+            <h2>🧠 If you are setting up a new frontend application, what are some optimizations you would put in place to make it more performant?</h2>
+            <p>👷‍♀️ Let's assume this is a <strong>modern frontend React application</strong> using <strong>client-side rendering</strong> and something like <strong>Webpack</strong> or <strong>Vite</strong> as a module bundler.</p>
+
+            <h3>1. Polyfilling the Code (Backward Compatibility)</h3>
+            <p>In any frontend project, you'll likely want to use <strong>modern JavaScript features</strong> (like async/await, spread operator, optional chaining, etc). But not all browsers support these features — especially older ones like <strong>Internet Explorer 11</strong>. So you need to <strong>polyfill</strong> your code.</p>
+
+            <p>💡 <strong>What is a polyfill?</strong> It's a piece of code (usually a function or method) that provides modern functionality on older browsers that do not natively support it.</p>
+
+            <p>Here's how the process works:</p>
+            <ul>
+                <li>You define your <strong>target browsers</strong> (in <code>browserslist</code>)</li>
+                <li>You analyze: does this browser support feature X?</li>
+                <li>If not → <strong>replace</strong> or <strong>add</strong> a version of that feature that works in older JS.</li>
+            </ul>
+
+            <p>Example: If the browser doesn't support <code>Promise</code>, you might import a Promise polyfill like <code>core-js</code>.</p>
+            <p>📦 The tradeoff: yes, this <strong>increases the bundle size</strong>, but ensures the app runs on more devices, increasing accessibility.</p>
+
+            <pre><code>import 'core-js/features/promise';
+import 'whatwg-fetch';</code></pre>
+
+            <h3>2. Bundle Compression (Gzip/Brotli)</h3>
+            <p>Once your JavaScript is bundled together, you want to reduce the file size as much as possible before it's sent over the network. Instead of sending a raw <code>.js</code> file, you send a <strong>compressed gzip or brotli file</strong>.</p>
+
+            <p>This can reduce file size by <strong>up to 70%</strong>, which has a <strong>huge impact on load time</strong>, especially for mobile users or slow networks.</p>
+
+            <p>You use <strong>content negotiation</strong> (via the HTTP headers) to tell the browser: "hey, this is a gzip file", and then it automatically decompresses it and executes it like normal.</p>
+
+            <p>In Webpack:</p>
+            <pre><code>const CompressionPlugin = require('compression-webpack-plugin');
+
+module.exports = {
+  plugins: [
+    new CompressionPlugin({
+      algorithm: 'gzip',
+    }),
+  ],
+};</code></pre>
+
+            <h3>3. Uglification and Minification</h3>
+            <p>This is a classic optimization. You take human-readable JS and remove all <strong>unnecessary characters</strong>:</p>
+            <ul>
+                <li>newlines</li>
+                <li>whitespace</li>
+                <li>long variable names</li>
+            </ul>
+
+            <pre><code>const userLoggedIn = true;</code></pre>
+            <p>gets transformed into:</p>
+            <pre><code>let a=!0;</code></pre>
+
+            <p>This process makes your file smaller, but unreadable — this is why you also generate <strong>source maps</strong>, so you can still debug your original code when an error happens in production.</p>
+
+            <p>Without source maps: You get an error on line 1 of <code>main.min.js</code> — useless.</p>
+            <p>With source maps: You know the original line of code in <code>auth.js:45</code> that caused it.</p>
+
+            <h3>4. Code Splitting (Load What You Need)</h3>
+            <p>Instead of shipping <strong>all</strong> your JavaScript upfront, split your code into logical chunks and load them <strong>on-demand</strong>.</p>
+
+            <p>Example:</p>
+            <pre><code>const CheckoutPage = React.lazy(() => import('./Checkout'));</code></pre>
+
+            <p>This is useful because on initial page load, you might not need the checkout page at all. So don't load it. Instead, lazy-load it when the user navigates to it.</p>
+            <p>Webpack/Vite will handle the chunking for you.</p>
+
+            <h3>5. Tree Shaking (Eliminate Dead Code)</h3>
+            <p>If you're using <strong>ES6 static imports</strong>, Webpack or Vite can analyze your code and remove unused parts of a library — known as <strong>tree shaking</strong>.</p>
+
+            <p>Example:</p>
+            <pre><code>import { Button } from 'my-ui-library';</code></pre>
+            <p>If you don't use <code>Modal</code>, <code>Tooltip</code>, etc. — those won't be bundled so performance is as good as possible.</p>
+            <p>💡 Does not work well with <code>require()</code> or dynamic imports.</p>
+
+            <h3>6. Dependency Graph</h3>
+            <p>Webpack builds a <strong>dependency graph</strong> by analyzing your <code>import</code> statements starting from the <code>entry</code> file (usually <code>index.js</code>). It forms a <strong>tree structure</strong> of modules and figures out what is needed, what can be bundled together, and what can be eliminated.</p>
+            <p>This ensures optimal bundling and helps during code splitting and tree shaking.</p>
+
+            <h3>CSS-in-JS</h3>
+            <p>CSS handles styles, JS handles interactivity.</p>
+
+            <p><strong>Use cases:</strong></p>
+            <ul>
+                <li>css-in-js = dynamic styles</li>
+                <li>CSS styles when certain state changes (like when clicking a button)</li>
+                <li>you could do it with classes, but it's faster and more powerful with css-in-js</li>
+                <li>you write css inside js files, and then tools like webpack inject them into the html DOM at runtime</li>
+                <li>this lets you do dynamic styling — styles based on props, themes, component state</li>
+            </ul>
+
+            <p><strong>Disadvantages:</strong></p>
+            <ul>
+                <li>because styles are in js files, you can't extract them into static css files</li>
+                <li>so they are not cacheable</li>
+                <li>the browser can't store them between visits</li>
+                <li>user has to re-download them every time</li>
+                <li>also makes styles harder to debug, because they're injected dynamically, class names are hashed, and don't show clear line numbers like regular .css files</li>
+            </ul>
+
+            <h3>7. Image & Asset Optimization</h3>
+            <p><strong>Frontend apps with very huge images, how would we optimize for performance?</strong></p>
+            <ul>
+                <li>Dimensions matter: Resizing to only what's needed</li>
+                <li>Using <strong>WebP</strong> over PNG/JPEG</li>
+                <li>Stripping metadata: once we have the dimensions, we look into compression and image optimization tools that can remove metadata from the image or modify what they call the color space to include less colors. The image looks a bit less vibrant but it contains less data so its smaller.</li>
+                <li>Hosting on <strong>CDN</strong> with caching headers and have direct caching policies.</li>
+                <li>Enable <strong>lazy loading</strong> (<code>loading="lazy"</code>) for offscreen images, load on scroll - load images as user scrolls.</li>
+                <li>Use <code>srcSet</code> attribute to ship different images depending on the viewport on device. Modern CDNs makes it by default.</li>
+                <li>Specify <code>width</code> and <code>height</code> to not have accumulative layer shift.</li>
+            </ul>
+
+            <h2>Performance challenges in frontend</h2>
+
+            <h3>How do you manage code quality in a large scale frontend application? What tools and practices do you use?</h3>
+            <p>🧹 for code quality, i would probably start with a <strong>linter</strong>, so you want to basically catch small issues and make sure everybody writes the same code.</p>
+            <p>🎨 you're gonna have <strong>prettier</strong>, maybe <strong>eslint</strong> set up, and if you're using typescript, have the <strong>tslint</strong> set up.</p>
+            <p>🧠 this takes off a lot of work and communication because everybody writes code in the same style.</p>
+
+            <p>🧪 after that, you do want to have a layer of unit tests, and ideally some <strong>E2E</strong> tests for sure.</p>
+            <p>🔍 and finally, i would have something like a dependency scan.</p>
+            <p>In the linter, have something that scans for <strong>a11y</strong>, which stands for accessibility.</p>
+
+            <p>🧰 so now we're taking care of <strong>code quality</strong>, <strong>style</strong>, <strong>accessibility</strong>, <strong>testing</strong>, and <strong>dependencies</strong> (since node modules especially can be vulnerable to different attacks).</p>
+
+            <p>📊 finally, have something like <strong>lighthouse</strong> or <strong>sentry</strong> in your pipeline — 📈 they tell you how your <strong>core web vitals</strong> change and how web performance changes over time. ⚠️ so if we make any mistake, like adding a big image or extra fonts, we <strong>immediately see the effect</strong> and fix it early on.</p>
+
+            <h3>❓ what is an xss attack and how do you make sure that frontend apps are not vulnerable to those attacks?</h3>
+            <p>💥 xss = cross-site scripting.</p>
+            <p>👾 the attacker persists some javascript code in our database.</p>
+            <p>🌐 then users, because they fetch from our database, end up running that code in their browser.</p>
+
+            <h3>❓ what are micro-frontends? when would you use frontend architecture?</h3>
+            <p>🧩 in a frontend, we usually have different components — header, body of the page, checkout info, etc.</p>
+            <p>👥 this works pretty fine when we're in small teams, but as we <strong>scale</strong>, it becomes really hard to contribute to a <strong>single frontend monolith</strong>.</p>
+
+            <p>⚙️ so what we can do is split those individual parts into different applications.</p>
+            <p>🧱 and then we have a <strong>shell</strong> — kind of like a container — that puts them all together.</p>
+            <p>🔐 this shell can be responsible for things like <strong>authentication</strong>, and <strong>shared state</strong>.</p>
+
+            <p>🚀 now we can deploy the <strong>different apps independently</strong>, so it allows us to <strong>separate</strong> development teams, and make development much faster and more modular.</p>
+
+            <p>⚠️ BUT you pay <strong>the price of complexity</strong> — you need more complex tooling to make something like this happen (routing, shared packages, auth sync, etc).</p>
+
+            <h3>🧠 when does it make sense?</h3>
+            <p>🧱 when we already have a big monolithic app, and we're thinking of <strong>breaking it into micro-frontends</strong>.</p>
+            <p>👥 micro-frontends are mostly good when <strong>splitting</strong> organisations. you need to split people into teams that can work <strong>independently</strong>.</p>
+
+            <p>🔗 but because we're distributing our system, you always pay the price for that — especially things like:</p>
+            <ul>
+                <li>🤯 sharing state</li>
+                <li>🧪 integration testing</li>
+                <li>🔀 coordination between teams</li>
+            </ul>
+
+            <p>✅ so when we need technology to <strong>enable parallel work without cross-dependencies</strong>, micro-frontends can help.</p>
+            <p>🚫 but if you're building smaller websites or simple apps, there's no real reason to overcomplicate — just stick with a regular monolithic frontend setup.</p>
         </main>
 
         <footer>
