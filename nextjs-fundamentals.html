@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+    <title>Next.js Fundamentals | Software Engineering Interview Guide</title>
+    <link rel="stylesheet" href="assets/css/page-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-name"><a href="index.html">Software Engineering Interview Guide</a></h1>
+            <p class="project-tagline">A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <main class="main-content">
+            <h1>Next.js Fundamentals</h1>
+
+            <h2>what Next.js is</h2>
+            <p>Next.js is a React-based framework created by Vercel (formerly ZEIT). It was first released in 2016. Unlike React, which is a UI library, Next.js is a full-stack framework that provides routing, rendering strategies, and performance optimizations out of the box.</p>
+            <p>Next.js uses React as its core rendering layer, but extends it with server-side capabilities and build-time optimizations.</p>
+
+            <hr>
+
+            <h2>why Next.js was created</h2>
+            <p>React was designed as a client-side UI library. Its responsibility is to describe how the UI changes in response to state and props. It intentionally does not solve problems such as:</p>
+            <ul>
+                <li>how pages are routed</li>
+                <li>how content is rendered before JavaScript loads</li>
+                <li>how to handle SEO</li>
+                <li>how to optimize initial load performance</li>
+                <li>how to handle server-side data fetching</li>
+            </ul>
+            <p>As React applications grew larger and more product-facing, teams had to build custom solutions for these problems using additional tooling and infrastructure.</p>
+            <p>Next.js was created to standardize and simplify these patterns by providing a framework that solves them in a consistent, production-ready way.</p>
+
+            <hr>
+
+            <h2>why react alone is not enough in some cases</h2>
+            <p>A typical React application renders entirely in the browser:</p>
+            <ol>
+                <li>the browser downloads a mostly empty HTML file</li>
+                <li>JavaScript is loaded</li>
+                <li>React executes and renders the UI</li>
+            </ol>
+            <p>This approach is known as <strong>client-side rendering (CSR)</strong>.</p>
+            <p>While CSR works well for highly interactive applications, it has drawbacks:</p>
+            <ul>
+                <li>slow first contentful paint</li>
+                <li>poor SEO for content-heavy pages</li>
+                <li>blank screens while JavaScript loads</li>
+                <li>extra work required for social sharing previews</li>
+            </ul>
+            <p>For applications where performance, discoverability, or content visibility matter, CSR alone is often insufficient.</p>
+
+            <hr>
+
+            <h2>what problem Next.js solves</h2>
+            <p>Next.js addresses these limitations by enabling multiple rendering strategies:</p>
+            <ul>
+                <li><strong>server-side rendering (SSR)</strong></li>
+                <li><strong>static site generation (SSG)</strong></li>
+                <li><strong>incremental static regeneration (ISR)</strong></li>
+            </ul>
+            <p>This allows developers to choose the most appropriate rendering model per page, rather than forcing a single approach for the entire application.</p>
+
+            <hr>
+
+            <h2>browser vs server responsibilities</h2>
+            <h3>in a traditional React app (CSR)</h3>
+            <ul>
+                <li>rendering happens in the browser</li>
+                <li>the server serves static assets only</li>
+                <li>SEO relies on JavaScript execution</li>
+            </ul>
+
+            <h3>in a Next.js app</h3>
+            <ul>
+                <li>the server can render HTML</li>
+                <li>data can be fetched on the server</li>
+                <li>the browser hydrates the HTML and adds interactivity</li>
+            </ul>
+            <p>This separation allows Next.js to optimize both initial load and interactivity.</p>
+
+            <hr>
+
+            <h2>why SEO matters</h2>
+            <p>Search engines prioritize:</p>
+            <ul>
+                <li>fast-loading pages</li>
+                <li>immediately available content</li>
+                <li>clean, crawlable HTML</li>
+            </ul>
+            <p>Although modern search engines can execute JavaScript, doing so is:</p>
+            <ul>
+                <li>slower</li>
+                <li>less reliable</li>
+                <li>deferred compared to HTML parsing</li>
+            </ul>
+            <p>Pages that ship meaningful HTML early are indexed more reliably and rank better.</p>
+
+            <hr>
+
+            <h2>server-side rendering (SSR)</h2>
+            <p>Server-side rendering means generating HTML for a page on the server for each request.</p>
+
+            <h3>flow:</h3>
+            <ol>
+                <li>request arrives</li>
+                <li>server fetches data</li>
+                <li>React renders HTML</li>
+                <li>HTML is sent to the browser</li>
+                <li>browser hydrates the page</li>
+            </ol>
+
+            <h3>SSR is useful when:</h3>
+            <ul>
+                <li>data changes frequently</li>
+                <li>content must be fresh on every request</li>
+                <li>SEO is critical</li>
+            </ul>
+
+            <h3>trade-offs:</h3>
+            <ul>
+                <li>higher server cost</li>
+                <li>slower response compared to static files</li>
+            </ul>
+
+            <h3>example:</h3>
+            <pre><code>// pages/product.tsx
+export async function getServerSideProps(context) {
+  // runs on the server for every request
+  const res = await fetch(`https://api.example.com/product/${context.params.id}`);
+  const product = await res.json();
+
+  return {
+    props: { product }
+  };
+}
+
+export default function Product({ product }) {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{product.name}&lt;/h1&gt;
+      &lt;p&gt;{product.description}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+            <hr>
+
+            <h2>static site generation (SSG)</h2>
+            <p>Static site generation means generating HTML at build time.</p>
+
+            <h3>flow:</h3>
+            <ol>
+                <li>pages are rendered during build</li>
+                <li>HTML files are stored on a CDN</li>
+                <li>requests are served instantly</li>
+            </ol>
+
+            <h3>SSG is ideal when:</h3>
+            <ul>
+                <li>content changes infrequently</li>
+                <li>pages are content-heavy</li>
+                <li>performance is a top priority</li>
+            </ul>
+            <p>Next.js also supports <strong>incremental static regeneration (ISR)</strong>, allowing static pages to be updated after deployment without rebuilding the entire site.</p>
+
+            <hr>
+
+            <h2>why google prefers HTML</h2>
+            <p>HTML allows search engines to:</p>
+            <ul>
+                <li>index content immediately</li>
+                <li>avoid executing JavaScript</li>
+                <li>understand page structure reliably</li>
+            </ul>
+            <p>Although Google can execute JavaScript, it does so in a secondary rendering pass, which may delay indexing and ranking.</p>
+            <p>Providing pre-rendered HTML improves:</p>
+            <ul>
+                <li>crawl efficiency</li>
+                <li>ranking stability</li>
+                <li>social sharing previews</li>
+            </ul>
+
+            <hr>
+
+            <h2>how Next.js improves performance</h2>
+            <p>Next.js includes several built-in performance optimizations:</p>
+
+            <h3>1. code splitting per page</h3>
+            <p>Each page only loads the JavaScript it needs:</p>
+            <pre><code>pages/
+  home.tsx    → only loads home.js
+  about.tsx   → only loads about.js
+  blog.tsx    → only loads blog.js</code></pre>
+
+            <h3>2. automatic static optimization</h3>
+            <p>Next.js automatically determines which pages can be statically generated.</p>
+
+            <h3>3. image optimization</h3>
+            <pre><code>import Image from 'next/image';
+
+&lt;Image
+  src="/photo.jpg"
+  width={800}
+  height={600}
+  alt="description"
+/&gt;</code></pre>
+            <p><strong>automatic:</strong></p>
+            <ul>
+                <li>responsive images</li>
+                <li>lazy loading</li>
+                <li>modern formats (WebP, AVIF)</li>
+                <li>size optimization</li>
+            </ul>
+
+            <h3>4. prefetching of linked pages</h3>
+            <p>Links in the viewport are prefetched automatically:</p>
+            <pre><code>import Link from 'next/link';
+
+&lt;Link href="/about"&gt;About&lt;/Link&gt;
+// prefetched when visible</code></pre>
+
+            <h3>5. server-side data fetching</h3>
+            <p>Data can be fetched on the server, reducing client-side requests.</p>
+
+            <hr>
+
+            <h2>when to use Next.js</h2>
+            <h3>Next.js is a good choice when:</h3>
+            <ul>
+                <li>✅ SEO is important</li>
+                <li>✅ initial load performance matters</li>
+                <li>✅ pages are content-driven</li>
+                <li>✅ you want server-side data fetching</li>
+                <li>✅ you want a production-ready React framework</li>
+            </ul>
+
+            <h3>it may be unnecessary when:</h3>
+            <ul>
+                <li>❌ the app is purely internal</li>
+                <li>❌ SEO does not matter</li>
+                <li>❌ the app is highly interactive with minimal content</li>
+            </ul>
+
+            <hr>
+
+            <h2>hydration explained</h2>
+            <p>Hydration is the process where Next.js attaches React event handlers to server-rendered HTML.</p>
+
+            <h3>flow:</h3>
+            <ol>
+                <li><strong>server renders HTML</strong> - full content visible</li>
+                <li><strong>HTML sent to browser</strong> - user sees content</li>
+                <li><strong>JavaScript loads</strong> - in parallel</li>
+                <li><strong>React hydrates</strong> - adds interactivity</li>
+                <li><strong>page becomes interactive</strong> - buttons work, state updates</li>
+            </ol>
+
+            <h3>why hydration matters:</h3>
+            <ul>
+                <li>users see content before JavaScript loads</li>
+                <li>progressive enhancement</li>
+                <li>best of both worlds: fast initial load + full interactivity</li>
+            </ul>
+
+            <hr>
+
+            <h2>summary</h2>
+            <p>Next.js is a React framework created to solve rendering, performance, and SEO limitations of client-side React applications. By supporting server-side and build-time rendering strategies, it enables faster, more discoverable, and more scalable web applications without requiring custom infrastructure.</p>
+
+            <h3>core benefits:</h3>
+            <ul>
+                <li>multiple rendering strategies (SSR, SSG, ISR)</li>
+                <li>improved SEO through pre-rendered HTML</li>
+                <li>better performance via code splitting and optimization</li>
+                <li>production-ready features out of the box</li>
+                <li>enhanced developer experience with file-based routing</li>
+            </ul>
+
+            <h3>when to choose Next.js:</h3>
+            <ul>
+                <li>content-driven applications</li>
+                <li>SEO-critical projects</li>
+                <li>performance-sensitive sites</li>
+                <li>teams wanting a complete framework</li>
+            </ul>
+
+            <h3>when to stick with React:</h3>
+            <ul>
+                <li>internal tools</li>
+                <li>admin panels</li>
+                <li>highly interactive apps where SEO doesn't matter</li>
+                <li>projects that need minimal framework overhead</li>
+            </ul>
+        </main>
+
+        <footer>
+            <p><a href="index.html">← Back to Home</a></p>
+        </footer>
+    </div>
+</body>
+</html>

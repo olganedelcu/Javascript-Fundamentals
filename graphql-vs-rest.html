@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+    <title>GraphQL vs REST | Software Engineering Interview Guide</title>
+    <link rel="stylesheet" href="assets/css/page-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-name"><a href="index.html">Software Engineering Interview Guide</a></h1>
+            <p class="project-tagline">A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <main class="main-content">
+            <h1>graphql vs rest 🧙‍♀️</h1>
+
+            <h5>when should you NOT use graphql? 🧙‍♀️</h5>
+            <h5>when is graphql a bad idea? 🧙‍♀️</h5>
+            <h5>why would you use graphql? 🧙‍♀️</h5>
+            <h5>what do you like about graphql?</h5>
+            <h5>what problem does graphql solve?</h5>
+            <h5>how is graphql different from rest?</h5>
+            <h5>what about documentation? 📚</h5>
+            <h5>what about data overfetching? 📦</h5>
+
+            <h1>graphql vs rest – technical rationale and trade-offs</h1>
+
+            <h2>1. what graphql is 🧙‍♀️</h2>
+            <p>graphql is a query language and runtime for apis created by facebook (meta) and released publicly in 2015. unlike rest, which exposes multiple endpoints, graphql exposes a single endpoint where clients specify exactly what data they need.</p>
+            <p>graphql is not a database and not a replacement for backend logic. it is an api layer that sits between the client and the underlying data sources.</p>
+            <h2>2. why graphql was created ✨</h2>
+            <p>graphql was created to solve problems that emerged at facebook scale, particularly:</p>
+            <ul>
+                <li>rapidly evolving product requirements</li>
+                <li>multiple clients (web, mobile, internal tools)</li>
+                <li>inefficient data fetching with rest</li>
+            </ul>
+
+            <p>in rest-based systems, clients often needed to:</p>
+            <ul>
+                <li>call multiple endpoints to build a single screen</li>
+                <li>receive more data than needed (overfetching)</li>
+                <li>receive too little data and make additional requests (underfetching)</li>
+            </ul>
+
+            <p>graphql was designed to give clients control over data shape, while allowing the server to evolve independently.</p>
+
+            <hr>
+
+            <h2>3. the core problem graphql solves 🎯</h2>
+            <p>the main problem graphql addresses is <strong>inefficient and inflexible data fetching</strong>.</p>
+
+            <h3>with rest:</h3>
+            <ul>
+                <li>endpoints define response shape</li>
+                <li>clients adapt to backend decisions</li>
+                <li>changes often require new endpoints or versions</li>
+            </ul>
+
+            <h3>with graphql:</h3>
+            <ul>
+                <li>clients define exactly what fields they need</li>
+                <li>a single request can fetch nested, related data</li>
+                <li>backend changes do not necessarily break clients</li>
+            </ul>
+
+            <p>this is particularly valuable for complex uis and mobile applications.</p>
+
+            <hr>
+
+            <h2>4. how graphql is different from rest 🔄</h2>
+
+            <h3>rest:</h3>
+            <ul>
+                <li>multiple endpoints</li>
+                <li>fixed response shapes</li>
+                <li>strong alignment with http semantics</li>
+                <li>simpler caching</li>
+            </ul>
+
+            <h3>graphql:</h3>
+            <ul>
+                <li>single endpoint</li>
+                <li>flexible, client-defined queries</li>
+                <li>strongly typed schema</li>
+                <li>requires more server-side complexity</li>
+            </ul>
+
+            <p>graphql shifts complexity from the client and api surface into the schema and resolver layer.</p>
+
+            <hr>
+
+            <h2>5. overfetching and underfetching 📊</h2>
+
+            <h3>overfetching (rest):</h3>
+            <ul>
+                <li>client receives data it does not need</li>
+                <li>increases payload size</li>
+                <li>impacts performance on slow networks</li>
+            </ul>
+
+            <h3>underfetching (rest):</h3>
+            <ul>
+                <li>client needs multiple requests to build a view</li>
+                <li>increases latency</li>
+                <li>more coordination between frontend and backend</li>
+            </ul>
+
+            <p>graphql eliminates both by allowing clients to request only what they need, in a single query.</p>
+
+            <hr>
+
+            <h2>6. documentation and schema 📖</h2>
+            <p>one of graphql's key strengths is that the schema is the <strong>source of truth</strong>.</p>
+
+            <h3>the schema defines:</h3>
+            <ul>
+                <li>types</li>
+                <li>fields</li>
+                <li>relationships</li>
+                <li>query and mutation capabilities</li>
+            </ul>
+
+            <h3>this enables:</h3>
+            <ul>
+                <li>automatic documentation</li>
+                <li>strong tooling (autocomplete, validation)</li>
+                <li>better developer experience</li>
+            </ul>
+
+            <p>in rest, documentation is often external (swagger, readme files) and can drift from implementation.</p>
+
+            <hr>
+
+            <h2>7. why teams choose graphql 💡</h2>
+            <p>common reasons to use graphql:</p>
+            <ul>
+                <li>complex, data-driven uis</li>
+                <li>multiple clients with different data needs</li>
+                <li>rapid iteration on frontend features</li>
+                <li>strong need for typed contracts between frontend and backend</li>
+            </ul>
+
+            <p>graphql is especially effective when frontend teams need autonomy over data shape.</p>
+
+            <hr>
+
+            <h2>8. when graphql is a bad idea ⚠️</h2>
+            <p>graphql is not universally better than rest.</p>
+
+            <p>it can be a poor choice when:</p>
+            <ul>
+                <li>apis are simple crud</li>
+                <li>data access patterns are stable</li>
+                <li>team size is small</li>
+                <li>operational simplicity is critical</li>
+                <li>caching via http/cdn is a priority</li>
+            </ul>
+
+            <h3>graphql adds complexity in:</h3>
+            <ul>
+                <li>query execution</li>
+                <li>performance tuning</li>
+                <li>error handling</li>
+                <li>monitoring</li>
+            </ul>
+
+       
+
+            <h2>9. when you should NOT use graphql 🚫</h2>
+            <p>avoid graphql when:</p>
+            <ul>
+                <li>you need simple request/response apis</li>
+                <li>you rely heavily on http semantics (status codes, caching, redirects)</li>
+                <li>you want easy cdn caching</li>
+                <li>you are building file uploads or streaming apis</li>
+                <li>you cannot control query complexity</li>
+            </ul>
+
+            <p>in these cases, rest is often simpler and more predictable.</p>
+
+            <h2>10. trade-offs and operational considerations ⚖️</h2>
+            <p>graphql requires careful handling of:</p>
+            <ul>
+                <li>query complexity and depth</li>
+                <li>n+1 query problems</li>
+                <li>authorization at field level</li>
+                <li>performance monitoring</li>
+            </ul>
+
+            <p>without proper safeguards, poorly designed queries can degrade backend performance.</p>
+
+            <hr>
+
+            <h2>11. what engineers like about graphql 💙</h2>
+            <p>common advantages cited by developers:</p>
+            <ul>
+                <li>precise data fetching</li>
+                <li>strong typing via schema</li>
+                <li>excellent tooling</li>
+                <li>reduced backend/frontend coupling</li>
+            </ul>
+
+            <p>the schema acts as a contract that improves collaboration between teams.</p>
+
+
+            <h2>12. summary 🧙‍♀️</h2>
+            <p>graphql is an api paradigm designed to solve data-fetching inefficiencies in complex, client-driven applications. it provides flexibility and strong typing at the cost of increased server-side complexity. rest remains a better choice for simpler, stable apis where operational simplicity and caching are priorities.</p>
+
+            <hr>
+
+            <h2>key takeaways ✨</h2>
+            <ul>
+                <li>graphql = single endpoint, client-defined queries</li>
+                <li>rest = multiple endpoints, server-defined responses</li>
+                <li>graphql solves overfetching and underfetching</li>
+                <li>graphql schema = automatic documentation</li>
+                <li>use graphql for complex, evolving uis</li>
+                <li>use rest for simple, stable apis</li>
+                <li>graphql adds server complexity</li>
+                <li>rest is simpler to cache and monitor</li>
+            </ul>
+        </main>
+
+        <footer>
+            <p><a href="index.html">← Back to Home</a></p>
+        </footer>
+    </div>
+</body>
+</html>

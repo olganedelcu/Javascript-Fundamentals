@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+    <title>React Fundamentals | Software Engineering Interview Guide</title>
+    <link rel="stylesheet" href="assets/css/page-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-name"><a href="index.html">Software Engineering Interview Guide</a></h1>
+            <p class="project-tagline">A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <main class="main-content">
+            <h1>React Fundamentals & Lifecycle</h1>
+
+            <h2>what is react?</h2>
+            <p><strong>react is a library, not a framework</strong></p>
+            <ul>
+                <li>library: provides specific functionality (UI rendering)</li>
+                <li>framework: provides entire application structure</li>
+            </ul>
+
+            <p><strong>core concepts:</strong></p>
+            <ul>
+                <li><strong>declarative UI</strong> - describe what the UI should look like, react handles the how</li>
+                <li><strong>components as pure functions</strong> - given the same inputs (props), return the same output</li>
+                <li><strong>one-way data flow</strong> - data flows down from parent to child via props</li>
+            </ul>
+
+            <hr>
+
+            <h2>props</h2>
+            <h3>what props are</h3>
+            <ul>
+                <li>immutable inputs to a component</li>
+                <li>passed from parent to child</li>
+                <li>read-only by design</li>
+            </ul>
+
+            <h3>props immutability</h3>
+            <p><strong>❌ NEVER reassign props:</strong></p>
+            <pre><code>export const Component = ({ title }) => {
+  title = title || 'Default'; // BAD - mutates props
+  // ...
+}</code></pre>
+
+            <p><strong>issue:</strong></p>
+            <ul>
+                <li>mutates props (breaks react assumptions)</li>
+                <li>violates one-way data flow</li>
+                <li>makes components harder to reason about</li>
+                <li><code>||</code> treats <code>0</code>, <code>false</code>, <code>''</code> as falsy</li>
+            </ul>
+
+            <p><strong>✅ derive a new variable instead:</strong></p>
+            <pre><code>export const Component = ({ title }) => {
+  const displayTitle = title ?? 'Default'; // GOOD
+  // ...
+}</code></pre>
+
+            <h3>default values: <code>??</code> vs <code>||</code></h3>
+            <p><strong><code>||</code> - fallback on ANY falsy value</strong></p>
+            <ul>
+                <li>triggers on: <code>0</code>, <code>false</code>, <code>''</code>, <code>null</code>, <code>undefined</code></li>
+                <li>use when: only want to exclude falsy values</li>
+            </ul>
+
+            <p><strong><code>??</code> - fallback ONLY on <code>null</code> or <code>undefined</code></strong></p>
+            <ul>
+                <li>triggers on: <code>null</code>, <code>undefined</code></li>
+                <li>use when: <code>0</code>, <code>false</code>, <code>''</code> are valid values</li>
+            </ul>
+
+            <p><strong>examples:</strong></p>
+            <pre><code>const count = 0;
+count || 10  // → 10 (0 is falsy)
+count ?? 10  // → 0  (0 is not null/undefined)
+
+const name = '';
+name || 'Guest'  // → 'Guest' ('' is falsy)
+name ?? 'Guest'  // → ''      ('' is not null/undefined)</code></pre>
+
+            <p><strong>rule of thumb:</strong> use <code>??</code> when <code>0</code>, <code>false</code>, or <code>''</code> are valid values.</p>
+
+            <hr>
+
+            <h2>state</h2>
+            <h3>what state is</h3>
+            <ul>
+                <li>data that changes over time</li>
+                <li>triggers re-renders when updated</li>
+                <li>local to the component</li>
+            </ul>
+
+            <h3>when to use <code>useState</code></h3>
+            <p><strong>use state when:</strong></p>
+            <ul>
+                <li>✅ value changes over time</li>
+                <li>✅ change should trigger a re-render</li>
+                <li>✅ value is not derived from props</li>
+            </ul>
+
+            <h3>when NOT to use state</h3>
+            <p><strong>don't use state for:</strong></p>
+            <ul>
+                <li>❌ values derived from props</li>
+                <li>❌ initialization-only values</li>
+                <li>❌ constants</li>
+            </ul>
+
+            <p><strong>example:</strong></p>
+            <pre><code>// ❌ BAD - startTime never changes
+const [startTime, setStartTime] = useState(Date.now());
+
+// ✅ GOOD - just a constant
+const startTime = Date.now();
+
+// ✅ GOOD - date changes over time
+const [date, setDate] = useState(Date.now());</code></pre>
+
+            <hr>
+
+            <h2>component lifecycle</h2>
+            <p>a react function component goes through three phases:</p>
+            <ol>
+                <li><strong>mount</strong> - component appears for the first time</li>
+                <li><strong>update</strong> - component re-renders due to state or prop changes</li>
+                <li><strong>unmount</strong> - component is removed from the UI</li>
+            </ol>
+
+            <h3>how lifecycle maps to <code>useEffect</code></h3>
+            <p>in function components, side effects are controlled with <code>useEffect</code>:</p>
+            <pre><code>useEffect(() => {
+  // side effect runs AFTER render
+
+  return () => {
+    // cleanup runs BEFORE next effect or on unmount
+  };
+}, [dependencies]);</code></pre>
+
+            <h3>how <code>useEffect</code> works internally</h3>
+            <p><strong>mount</strong> → effect runs after DOM paint<br>
+            <strong>update</strong> → cleanup runs → effect runs again (if deps changed)<br>
+            <strong>unmount</strong> → cleanup runs once</p>
+
+            <hr>
+
+            <h2>useEffect</h2>
+            <h3>what <code>useEffect</code> is</h3>
+            <p>a hook for performing side effects in function components.</p>
+
+            <h3>why side effects don't belong in render</h3>
+            <p><strong>render must be pure:</strong></p>
+            <ul>
+                <li>❌ no timers</li>
+                <li>❌ no subscriptions</li>
+                <li>❌ no mutations</li>
+                <li>❌ no side effects</li>
+            </ul>
+
+            <p><strong>why?</strong></p>
+            <ul>
+                <li>react can render multiple times</li>
+                <li>render may be interrupted or retried</li>
+                <li>side effects during render cause memory leaks & duplication</li>
+            </ul>
+
+            <h3>dependency array behavior</h3>
+            <pre><code>useEffect(() => {
+  // ...
+}, []); // empty array → runs once on mount
+
+useEffect(() => {
+  // ...
+}, [count]); // runs when count changes
+
+useEffect(() => {
+  // ...
+}); // no array → runs after EVERY render (usually wrong)</code></pre>
+
+            <h3>effect cleanup function</h3>
+            <pre><code>useEffect(() => {
+  const id = setInterval(() => {
+    console.log('tick');
+  }, 1000);
+
+  // cleanup function
+  return () => {
+    clearInterval(id);
+  };
+}, []);</code></pre>
+
+            <h3>when cleanup runs</h3>
+            <ul>
+                <li>before the effect runs again (on update)</li>
+                <li>when the component unmounts</li>
+            </ul>
+
+            <h3>why cleanup matters</h3>
+            <ul>
+                <li>✅ prevents memory leaks</li>
+                <li>✅ prevents duplicate logic after re-renders</li>
+                <li>✅ ensures predictable lifecycle behavior</li>
+            </ul>
+
+            <hr>
+
+            <h2>side effects</h2>
+            <h3>what counts as a side effect</h3>
+            <ul>
+                <li>network requests (fetch, axios)</li>
+                <li>timers (<code>setTimeout</code>, <code>setInterval</code>)</li>
+                <li>subscriptions (WebSocket, EventSource)</li>
+                <li>event listeners (window, document)</li>
+                <li>DOM manipulation</li>
+                <li>logging</li>
+                <li>localStorage/sessionStorage</li>
+            </ul>
+
+            <h3>why side effects must be isolated</h3>
+            <p>side effects during render can:</p>
+            <ul>
+                <li>create memory leaks</li>
+                <li>cause duplicate operations</li>
+                <li>make components unpredictable</li>
+                <li>break react's rendering model</li>
+            </ul>
+
+            <hr>
+
+            <h2>setInterval in react (deep dive)</h2>
+            <h3>what <code>setInterval</code> is (JavaScript)</h3>
+            <ul>
+                <li>a browser API (not react)</li>
+                <li>takes a callback and a delay (ms)</li>
+                <li>returns an interval ID</li>
+            </ul>
+
+            <pre><code>const id = setInterval(callback, delay);
+clearInterval(id);</code></pre>
+
+            <h3>why <code>setInterval</code> inside render is dangerous</h3>
+            <pre><code>// ❌ DANGEROUS
+function Component() {
+  setInterval(() => {
+    console.log('tick');
+  }, 1000);
+
+  return &lt;div /&gt;;
+}</code></pre>
+
+            <p><strong>what happens:</strong></p>
+            <ol>
+                <li>render runs → interval created</li>
+                <li>state update → render again → <strong>another interval</strong></li>
+                <li>leads to:
+                    <ul>
+                        <li>multiple intervals running</li>
+                        <li>memory leaks</li>
+                        <li>performance degradation</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h3>using <code>setInterval</code> inside <code>useEffect</code></h3>
+            <pre><code>// ✅ CORRECT
+useEffect(() => {
+  const intervalId = setInterval(() => {
+    setDate(Date.now());
+  }, 1000);
+
+  return () => {
+    clearInterval(intervalId);
+  };
+}, []); // run once on mount</code></pre>
+
+            <hr>
+
+            <h2>re-rendering</h2>
+            <h3>what causes a re-render</h3>
+            <ul>
+                <li>state changes (<code>setState</code>)</li>
+                <li>props change (parent re-renders)</li>
+                <li>context changes</li>
+                <li>force update (rare, avoid)</li>
+            </ul>
+
+            <h3>avoiding unnecessary re-renders</h3>
+            <ul>
+                <li>keep state close to where it's used</li>
+                <li>split large components</li>
+                <li>use proper dependency arrays</li>
+                <li>memoization (when needed)</li>
+            </ul>
+
+            <hr>
+
+            <h2>JSX & imports</h2>
+            <h3>JSX transformation</h3>
+            <p>JSX is transformed to <code>React.createElement</code> calls.</p>
+
+            <p><strong>before react 17:</strong></p>
+            <pre><code>import React from 'react'; // required</code></pre>
+
+            <p><strong>react 17+:</strong></p>
+            <pre><code>// no react import needed for JSX
+import { useState } from 'react';</code></pre>
+
+            <h3>why import react is no longer required</h3>
+            <p>react 17+ uses a new JSX transform that doesn't require <code>React</code> in scope.</p>
+
+            <h3>when react import is still needed</h3>
+            <pre><code>import React from 'react';
+
+// when using React.Something:
+React.memo(Component);
+React.forwardRef(...);
+React.lazy(...);</code></pre>
+
+            <hr>
+
+            <h2>modern JavaScript features</h2>
+            <h3>Date.now() vs new Date().getTime()</h3>
+            <p><strong>old way (pre-ES5, before 2009):</strong></p>
+            <pre><code>var timestamp = new Date().getTime(); // ❌ legacy</code></pre>
+
+            <p><strong>how it works:</strong></p>
+            <ol>
+                <li>creates Date object in memory</li>
+                <li>calls <code>getTime()</code> method</li>
+                <li>returns number</li>
+                <li>garbage collector cleans up the Date object</li>
+            </ol>
+
+            <p><strong>performance:</strong> slower - more memory allocation, GC cleanup required</p>
+
+            <p><strong>modern way (ES5+):</strong></p>
+            <pre><code>const timestamp = Date.now(); // ✅</code></pre>
+
+            <p><strong>performance:</strong> faster - returns timestamp directly, no object allocation</p>
+
+            <hr>
+
+            <h2>common react mistakes</h2>
+            <h3>❌ side effects in render</h3>
+            <pre><code>// BAD
+function Component() {
+  setInterval(...); // creates new interval every render
+  return &lt;div /&gt;;
+}</code></pre>
+
+            <h3>❌ reassigning props</h3>
+            <pre><code>// BAD
+const Component = ({ title }) => {
+  title = title || 'Default';
+}</code></pre>
+
+            <h3>❌ using state for constants</h3>
+            <pre><code>// BAD
+const [startTime, setStartTime] = useState(Date.now());
+// startTime never changes - shouldn't be state</code></pre>
+
+            <h3>❌ forgetting effect cleanup</h3>
+            <pre><code>// BAD
+useEffect(() => {
+  setInterval(...);
+  // missing cleanup!
+}, []);</code></pre>
+
+            <hr>
+
+            <h2>key mental models</h2>
+            <h3>render is not lifecycle</h3>
+            <ul>
+                <li>render is just a function call</li>
+                <li>it calculates what UI should look like</li>
+                <li>it doesn't DO anything</li>
+            </ul>
+
+            <h3>effects run after render</h3>
+            <pre><code>render → commit to DOM → paint → effects</code></pre>
+
+            <h3>cleanup prevents leaks</h3>
+            <p>always clean up:</p>
+            <ul>
+                <li>timers</li>
+                <li>subscriptions</li>
+                <li>event listeners</li>
+                <li>network requests (abort controllers)</li>
+            </ul>
+
+            <h3>react may render more than you expect</h3>
+            <ul>
+                <li>strict mode renders twice in development</li>
+                <li>react may discard renders</li>
+                <li>write resilient code</li>
+            </ul>
+
+            <h3>think in data flow, not events</h3>
+            <ul>
+                <li>don't think "when button clicks, update state"</li>
+                <li>think "state determines UI"</li>
+            </ul>
+
+            <hr>
+
+            <h2>summary checklist</h2>
+            <ul>
+                <li>understand react is a library, not a framework</li>
+                <li>never reassign props</li>
+                <li>use <code>??</code> for default values when <code>0</code>, <code>''</code>, <code>false</code> are valid</li>
+                <li>only use state for values that change over time</li>
+                <li>keep side effects in <code>useEffect</code>, not render</li>
+                <li>always provide cleanup functions for timers/subscriptions</li>
+                <li>understand the three lifecycle phases: mount, update, unmount</li>
+                <li>know when cleanup runs (before next effect, on unmount)</li>
+                <li>use <code>Date.now()</code> instead of <code>new Date().getTime()</code></li>
+                <li>think in data flow, not events</li>
+                <li>render must be pure</li>
+                <li>effects run after render and commit</li>
+            </ul>
+        </main>
+
+        <footer>
+            <p><a href="index.html">← Back to Home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
