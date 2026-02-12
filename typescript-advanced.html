@@ -164,6 +164,152 @@ config.auth.client = "whatever"; // ❌ we can not change it</code></pre>
           it whenever you're dealing with <strong>union types</strong>, and you
           need to work with one specific subtype.
         </p>
+
+        <hr />
+
+        <h2>arrays &amp; tuples</h2>
+        <h3>arrays</h3>
+        <pre><code>const names: string[] = ["olga", "ana", "maria"];
+const ids: Array&lt;number&gt; = [1, 2, 3];</code></pre>
+        <h3>tuples</h3>
+        <p>a tuple is a fixed-length array where each position has a specific type.</p>
+        <pre><code>const user: [string, number] = ["olga", 25];
+// user[0] is string, user[1] is number
+
+const coordinates: [number, number] = [40.7, -74.0];
+
+type HttpResponse = [status: number, body: string];
+const res: HttpResponse = [200, '{"ok": true}'];</code></pre>
+
+        <hr />
+        <h2>union types</h2>
+        <p>a union type means a value can be <strong>one of several types</strong>.</p>
+        <pre><code>type Status = "loading" | "success" | "error";
+type Id = string | number;
+
+function printId(id: string | number) {
+  if (typeof id === "string") {
+    console.log(id.toUpperCase());
+  } else {
+    console.log(id.toFixed(2));
+  }
+}</code></pre>
+
+        <hr />
+        <h2>intersection types</h2>
+        <p>an intersection type combines multiple types into one — the result must satisfy <strong>all</strong> of them.</p>
+        <pre><code>type HasName = { name: string };
+type HasAge = { age: number };
+type Person = HasName &amp; HasAge;
+
+const user: Person = { name: "olga", age: 25 };</code></pre>
+
+        <hr />
+        <h2>literal types</h2>
+        <p>a literal type represents <strong>one specific value</strong>.</p>
+        <pre><code>type Direction = "up" | "down" | "left" | "right";
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+type StatusCode = 200 | 404 | 500;
+
+let dir: Direction = "up"; // ✅
+dir = "diagonal"; // ❌ error</code></pre>
+
+        <hr />
+        <h2>optional properties (?)</h2>
+        <pre><code>interface User {
+  name: string;
+  email?: string; // optional
+}
+const user1: User = { name: "olga" }; // ✅
+const user2: User = { name: "olga", email: "olga@test.com" }; // ✅</code></pre>
+
+        <hr />
+        <h2>readonly properties</h2>
+        <pre><code>interface Config {
+  readonly apiUrl: string;
+  readonly port: number;
+}
+const config: Config = { apiUrl: "https://api.example.com", port: 3000 };
+config.apiUrl = "something"; // ❌ error</code></pre>
+
+        <hr />
+        <h2>index signatures</h2>
+        <pre><code>interface StringMap {
+  [key: string]: string;
+}
+const headers: StringMap = {
+  "Content-Type": "application/json",
+  "Authorization": "Bearer token123",
+};</code></pre>
+
+        <hr />
+        <h2>generic constraints (&lt;T extends Something&gt;)</h2>
+        <pre><code>function logLength&lt;T extends { length: number }&gt;(item: T): void {
+  console.log(item.length);
+}
+logLength("hello"); // ✅
+logLength([1, 2, 3]); // ✅
+logLength(42); // ❌
+
+function getProperty&lt;T, K extends keyof T&gt;(obj: T, key: K): T[K] {
+  return obj[key];
+}</code></pre>
+
+        <hr />
+        <h2>utility types (extremely common)</h2>
+        <h3>Partial&lt;T&gt;</h3>
+        <p>makes all properties optional.</p>
+        <pre><code>function updateUser(id: string, updates: Partial&lt;User&gt;) {}
+updateUser("123", { name: "olga" }); // ✅ only name</code></pre>
+        <h3>Pick&lt;T, Keys&gt; / Omit&lt;T, Keys&gt;</h3>
+        <pre><code>type UserPreview = Pick&lt;User, "name" | "email"&gt;;
+type UserWithoutAge = Omit&lt;User, "age"&gt;;</code></pre>
+        <h3>Record&lt;K, V&gt;</h3>
+        <pre><code>type Role = "admin" | "user" | "guest";
+const permissions: Record&lt;Role, string[]&gt; = {
+  admin: ["read", "write", "delete"],
+  user: ["read", "write"],
+  guest: ["read"],
+};</code></pre>
+
+        <hr />
+        <h2>typing API work</h2>
+        <h3>typing request/response</h3>
+        <pre><code>interface ApiResponse&lt;T&gt; {
+  data: T;
+  status: number;
+  message: string;
+}
+
+async function fetchUsers(): Promise&lt;User[]&gt; {
+  const res = await fetch("/api/users");
+  return res.json();
+}
+
+function throwError(msg: string): never {
+  throw new Error(msg);
+}</code></pre>
+
+        <hr />
+        <h2>narrowing &amp; guards (external API data)</h2>
+        <h3>typeof / instanceof</h3>
+        <pre><code>function process(value: string | number) {
+  if (typeof value === "string") return value.toUpperCase();
+  return value * 2;
+}
+
+function handleError(error: unknown) {
+  if (error instanceof Error) console.log(error.message);
+}</code></pre>
+        <h3>discriminated unions</h3>
+        <pre><code>type Success = { status: "success"; data: string };
+type Failure = { status: "error"; error: string };
+type Result = Success | Failure;
+
+function handle(result: Result) {
+  if (result.status === "success") console.log(result.data);
+  else console.log(result.error);
+}</code></pre>
       </main>
 
       <footer>

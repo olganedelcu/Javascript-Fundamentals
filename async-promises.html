@@ -119,6 +119,89 @@ function Characters() {
 
 export default Characters;</code></pre>
 
+            <hr>
+
+            <h2>🔄 Promise.all, Promise.race, Promise.allSettled</h2>
+            <h3>Promise.all</h3>
+            <p>runs multiple promises <strong>in parallel</strong>, resolves when <strong>all</strong> succeed, rejects if <strong>any</strong> fail.</p>
+            <pre><code>const [users, posts, comments] = await Promise.all([
+  fetch("/api/users").then(r =&gt; r.json()),
+  fetch("/api/posts").then(r =&gt; r.json()),
+  fetch("/api/comments").then(r =&gt; r.json()),
+]);</code></pre>
+            <h3>Promise.allSettled</h3>
+            <p>waits for <strong>all</strong> to finish (success or failure).</p>
+            <pre><code>const results = await Promise.allSettled([
+  fetch("/api/users"),
+  fetch("/api/failing-endpoint"),
+]);
+results.forEach(r =&gt; {
+  if (r.status === "fulfilled") console.log(r.value);
+  else console.log(r.reason);
+});</code></pre>
+            <h3>Promise.race</h3>
+            <p>resolves/rejects with the <strong>first</strong> promise to settle.</p>
+
+            <hr>
+
+            <h2>🔁 event loop basics</h2>
+            <p>javascript is <strong>single-threaded</strong> but handles async via the <strong>event loop</strong>.</p>
+            <pre><code>console.log("1"); // sync — runs first
+setTimeout(() =&gt; console.log("2"), 0); // macro task — runs last
+Promise.resolve().then(() =&gt; console.log("3")); // microtask — runs second
+console.log("4"); // sync
+// output: 1, 4, 3, 2</code></pre>
+            <p><strong>key rule:</strong> microtasks (promises) always run before macro tasks (setTimeout).</p>
+
+            <hr>
+
+            <h2>⏱️ handling API timeouts</h2>
+            <pre><code>async function fetchWithTimeout(url, timeoutMs = 5000) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() =&gt; controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeout);
+    return await response.json();
+  } catch (error) {
+    clearTimeout(timeout);
+    if (error.name === "AbortError") throw new Error("request timed out");
+    throw error;
+  }
+}</code></pre>
+
+            <hr>
+
+            <h2>🔁 retry logic</h2>
+            <h3>simple retry</h3>
+            <pre><code>async function fetchWithRetry(url, retries = 3) {
+  for (let i = 0; i &lt; retries; i++) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (error) {
+      if (i === retries - 1) throw error;
+    }
+  }
+}</code></pre>
+            <h3>retry with exponential backoff</h3>
+            <pre><code>async function fetchWithBackoff(url, retries = 3) {
+  for (let i = 0; i &lt; retries; i++) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (error) {
+      if (i === retries - 1) throw error;
+      const delay = Math.pow(2, i) * 1000; // 1s, 2s, 4s...
+      await new Promise(resolve =&gt; setTimeout(resolve, delay));
+    }
+  }
+}</code></pre>
+
+            <hr>
+
             <h3>What is a pure function and when do we use it?</h3>
             <p>A pure function is very useful when using <strong>functional programming</strong>. Why? Because it really <strong>does not modify anything else</strong> — it has <strong>no side effects</strong>. 🌱</p>
 

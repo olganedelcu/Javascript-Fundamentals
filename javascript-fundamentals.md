@@ -103,6 +103,184 @@ so basically, **JavaScript cannot clean it up** — it cannot get rid of anythin
 
 that is why traditionally we all know that JavaScript is not a super memory-efficient language — it actually needs a lot of **RAM memory** 💾.
 
+## ➡️ arrow functions
+
+arrow functions are a shorter syntax for writing functions, introduced in ES6.
+```js
+// traditional function
+function add(a, b) {
+  return a + b;
+}
+
+// arrow function
+const add = (a, b) => a + b;
+
+// with a body (needs explicit return)
+const multiply = (a, b) => {
+  const result = a * b;
+  return result;
+};
+
+// single parameter (no parentheses needed)
+const double = x => x * 2;
+```
+
+### key differences from regular functions:
+- **no own `this`** — inherits `this` from the surrounding scope
+- **cannot be used as constructors** — no `new` keyword
+- **no `arguments` object** — use rest parameters instead
+
+```js
+const obj = {
+  name: "olga",
+  // ❌ arrow function — `this` is NOT the object
+  greetArrow: () => console.log(this.name), // undefined
+
+  // ✅ regular function — `this` IS the object
+  greetRegular() { console.log(this.name); } // "olga"
+};
+```
+
+---
+
+## 🔓 object / array destructuring
+
+destructuring lets you unpack values from arrays or objects into separate variables.
+
+### object destructuring
+```js
+const user = { name: "olga", age: 25, city: "berlin" };
+
+// without destructuring
+const name = user.name;
+const age = user.age;
+
+// with destructuring
+const { name, age, city } = user;
+
+// renaming
+const { name: userName, age: userAge } = user;
+
+// default values
+const { name, country = "unknown" } = user;
+```
+
+### array destructuring
+```js
+const colors = ["red", "green", "blue"];
+
+const [first, second, third] = colors;
+// first = "red", second = "green", third = "blue"
+
+// skip values
+const [, , last] = colors; // last = "blue"
+
+// with rest
+const [head, ...rest] = colors; // head = "red", rest = ["green", "blue"]
+```
+
+### in function parameters (very common in react)
+```js
+// instead of:
+function greet(props) {
+  console.log(props.name);
+}
+
+// destructure directly:
+function greet({ name, age }) {
+  console.log(name);
+}
+```
+
+---
+
+## 🌊 spread operator (...)
+
+the spread operator expands an iterable (array, object) into individual elements.
+
+### with arrays
+```js
+const a = [1, 2, 3];
+const b = [4, 5, 6];
+
+const combined = [...a, ...b]; // [1, 2, 3, 4, 5, 6]
+
+// copy an array (shallow)
+const copy = [...a];
+
+// add to beginning/end
+const withZero = [0, ...a]; // [0, 1, 2, 3]
+```
+
+### with objects
+```js
+const user = { name: "olga", age: 25 };
+
+// copy + override
+const updated = { ...user, age: 26 };
+// { name: "olga", age: 26 }
+
+// merge objects
+const defaults = { theme: "light", lang: "en" };
+const prefs = { theme: "dark" };
+const config = { ...defaults, ...prefs };
+// { theme: "dark", lang: "en" }
+```
+
+### rest parameters (the opposite — collects into an array)
+```js
+function sum(...numbers) {
+  return numbers.reduce((acc, n) => acc + n, 0);
+}
+
+sum(1, 2, 3, 4); // 10
+```
+
+---
+
+## 📦 modules (import / export)
+
+### named exports
+```js
+// utils.js
+export const PI = 3.14;
+export function add(a, b) { return a + b; }
+
+// main.js
+import { PI, add } from './utils.js';
+```
+
+### default exports
+```js
+// logger.js
+export default function log(msg) {
+  console.log(msg);
+}
+
+// main.js
+import log from './logger.js'; // can name it anything
+import myLogger from './logger.js'; // also works
+```
+
+### named vs default
+- **named**: must use exact name (or rename with `as`), can have many per file
+- **default**: can name anything on import, only one per file
+
+### ES modules vs CommonJS
+```js
+// ES modules (modern, browser + node 14+)
+import { something } from './file.js';
+export const value = 42;
+
+// CommonJS (older, node.js traditional)
+const { something } = require('./file.js');
+module.exports = { value: 42 };
+```
+- **ES modules**: static imports, tree-shakeable, async loading
+- **CommonJS**: dynamic imports, synchronous, no tree-shaking
+
+---
+
 ## 📐 types, interfaces, generics (typescript)
 
 ### 🧩 types

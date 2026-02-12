@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+    <title>Node.js Fundamentals | Software Engineering Interview Guide</title>
+    <link rel="stylesheet" href="assets/css/page-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-name"><a href="index.html">Software Engineering Interview Guide</a></h1>
+            <p class="project-tagline">A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <main class="main-content">
+            <h1>🟢 Node.js Fundamentals</h1>
+
+            <h2>1. what node.js actually is</h2>
+            <p>node.js is a <strong>javascript runtime</strong> built on chrome's V8 engine. it allows you to run javascript <strong>outside the browser</strong> — on servers, scripts, CLI tools, etc.</p>
+            <p>it is <strong>not</strong> a framework. it is <strong>not</strong> a language. it is a runtime environment.</p>
+
+            <hr>
+
+            <h2>2. why node.js was created</h2>
+            <p>before node.js (2009), server-side was dominated by PHP, Java, Ruby, Python. <strong>ryan dahl</strong> created node.js to solve problems in traditional web servers:</p>
+
+            <h3>the problem with traditional servers (thread-per-request):</h3>
+            <pre><code>request 1 → thread 1 → waits for DB → responds
+request 2 → thread 2 → waits for DB → responds
+...
+request 10,000 → ❌ no threads left → connection refused</code></pre>
+            <p>each request spawned a <strong>new thread</strong>. threads are expensive (~2MB each), and most of the time they're just <strong>sitting idle</strong>, waiting for I/O.</p>
+
+            <h3>what node.js does differently:</h3>
+            <pre><code>request 1 → start DB query → move on
+request 2 → start DB query → move on
+request 10,000 → start API call → move on
+
+DB query 1 done → callback runs → respond to request 1</code></pre>
+            <p><strong>one thread handles everything</strong> — it never waits. it delegates I/O to the OS and moves to the next task.</p>
+
+            <hr>
+
+            <h2>3. what problem node.js solves</h2>
+            <p>node.js is designed for <strong>I/O-bound, event-driven</strong> applications:</p>
+            <ul>
+                <li><strong>API servers</strong> — thousands of requests that mostly wait for databases</li>
+                <li><strong>real-time apps</strong> — chat, live dashboards (websockets)</li>
+                <li><strong>microservices</strong> — lightweight services that talk to each other</li>
+                <li><strong>integration layers</strong> — unified APIs aggregating multiple sources</li>
+                <li><strong>streaming</strong> — processing data in chunks</li>
+            </ul>
+            <h3>what node.js is NOT good for:</h3>
+            <p><strong>CPU-intensive tasks</strong> — video encoding, heavy computation. while CPU is busy, the event loop is blocked.</p>
+            <p><strong>insight:</strong> when someone says "node doesn't scale" — they usually mean CPU-bound work. for I/O-bound work (90% of web apps), node scales extremely well.</p>
+
+            <hr>
+
+            <h2>4. core runtime concepts</h2>
+            <h3>key characteristics:</h3>
+            <ul>
+                <li><strong>single-threaded</strong> — one main thread of execution</li>
+                <li><strong>event-driven</strong> — uses an event loop to handle async operations</li>
+                <li><strong>non-blocking I/O</strong> — file reads, network calls don't block the main thread</li>
+            </ul>
+
+            <h3>what blocks the event loop (avoid):</h3>
+            <pre><code>// ❌ synchronous file read in a server
+const data = fs.readFileSync("huge-file.json"); // blocks EVERYTHING
+
+// ❌ heavy computation
+for (let i = 0; i &lt; 1_000_000_000; i++) {} // blocks EVERYTHING
+
+// ✅ use async alternatives
+const data = await fs.promises.readFile("huge-file.json");</code></pre>
+
+            <hr>
+
+            <h2>5. streams (senior-level)</h2>
+            <p>streams let you process data <strong>piece by piece</strong> instead of loading everything into memory.</p>
+            <pre><code>// ❌ loading a 2GB file into memory
+const data = await fs.promises.readFile("huge-log.txt", "utf-8");
+
+// ✅ streaming — processes line by line
+import { createReadStream } from "fs";
+import { createInterface } from "readline";
+
+const stream = createReadStream("huge-log.txt");
+const rl = createInterface({ input: stream });
+
+rl.on("line", (line) =&gt; {
+  if (line.includes("ERROR")) console.log(line);
+});</code></pre>
+
+            <h3>piping streams:</h3>
+            <pre><code>createReadStream("input.txt")
+  .pipe(createGzip())
+  .pipe(createWriteStream("input.txt.gz"));</code></pre>
+
+            <hr>
+
+            <h2>6. file system (fs)</h2>
+            <pre><code>import { readFile as readFilePromise } from "fs/promises";
+
+// async with promises (modern, preferred)
+const data = await readFilePromise("config.json", "utf-8");
+
+// writing
+import { writeFile } from "fs/promises";
+await writeFile("output.json", JSON.stringify({ name: "olga" }), "utf-8");</code></pre>
+
+            <hr>
+
+            <h2>7. working with APIs</h2>
+            <h3>POST request with auth</h3>
+            <pre><code>const response = await fetch("https://api.example.com/users", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`,
+  },
+  body: JSON.stringify({ name: "olga", email: "olga@test.com" }),
+});
+
+if (!response.ok) {
+  throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+}
+
+const data = await response.json();</code></pre>
+
+            <h3>common auth patterns</h3>
+            <pre><code>// bearer token
+headers: { "Authorization": `Bearer ${token}` }
+
+// API key
+headers: { "X-API-Key": apiKey }
+
+// basic auth
+headers: {
+  "Authorization": `Basic ${Buffer.from(`${user}:${pass}`).toString("base64")}`
+}</code></pre>
+
+            <hr>
+
+            <h2>8. express basics</h2>
+            <h3>routes + middleware</h3>
+            <pre><code>import express from "express";
+const app = express();
+app.use(express.json());
+
+app.get("/api/users", (req, res) =&gt; {
+  res.json({ users: [] });
+});
+
+app.post("/api/users", (req, res) =&gt; {
+  const { name, email } = req.body;
+  res.status(201).json({ id: "123", name, email });
+});
+
+// auth middleware
+function authenticate(req, res, next) {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "no token" });
+  req.user = verifyToken(token);
+  next();
+}
+
+// error handling (must have 4 params)
+app.use((err, req, res, next) =&gt; {
+  console.error(err.stack);
+  res.status(500).json({ error: "something went wrong" });
+});</code></pre>
+
+            <hr>
+
+            <h2>9. environment variables</h2>
+            <pre><code>const apiKey = process.env.API_KEY;
+const port = process.env.PORT || 3000;</code></pre>
+            <pre><code># .env
+API_KEY=sk-1234567890
+DATABASE_URL=postgresql://user:pass@localhost:5432/mydb</code></pre>
+            <ul>
+                <li><strong>never commit .env files</strong> — add to .gitignore</li>
+                <li><strong>never log secrets</strong></li>
+            </ul>
+
+            <hr>
+
+            <h2>10. debugging</h2>
+            <h3>reading stack traces (bottom to top)</h3>
+            <pre><code>TypeError: Cannot read properties of undefined (reading 'name')
+    at getUser (/app/src/users.js:15:23)
+    at processRequest (/app/src/handler.js:42:10)
+    at /app/src/server.js:8:5</code></pre>
+
+            <h3>effective logging</h3>
+            <pre><code>// ❌ useless
+console.log(data);
+
+// ✅ useful
+console.log("[getUser] response:", JSON.stringify(data, null, 2));</code></pre>
+
+            <hr>
+
+            <h2>11. error handling patterns (senior-level)</h2>
+            <h3>custom error classes</h3>
+            <pre><code>class AppError extends Error {
+  constructor(message, statusCode, code) {
+    super(message);
+    this.statusCode = statusCode;
+    this.code = code;
+  }
+}
+
+class NotFoundError extends AppError {
+  constructor(resource) {
+    super(`${resource} not found`, 404, "NOT_FOUND");
+  }
+}</code></pre>
+
+            <h3>graceful shutdown</h3>
+            <pre><code>process.on("SIGTERM", async () =&gt; {
+  console.log("shutting down gracefully...");
+  server.close();
+  await db.disconnect();
+  process.exit(0);
+});</code></pre>
+
+            <hr>
+
+            <h2>12. when to use node.js</h2>
+            <ul>
+                <li>✅ REST/GraphQL APIs</li>
+                <li>✅ real-time apps (websockets)</li>
+                <li>✅ microservices and integration layers</li>
+                <li>✅ serverless functions</li>
+                <li>✅ CLI tools</li>
+                <li>❌ heavy computation (use Go, Rust)</li>
+                <li>❌ memory-constrained environments</li>
+            </ul>
+        </main>
+
+        <footer>
+            <p><a href="index.html">&larr; Back to Home</a></p>
+        </footer>
+    </div>
+</body>
+</html>

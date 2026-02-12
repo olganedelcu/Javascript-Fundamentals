@@ -110,6 +110,104 @@ sayHelloOlga(); // still works</code></pre>
 
             <p>that is why traditionally we all know that JavaScript is not a super memory-efficient language — it actually needs a lot of <strong>RAM memory</strong> 💾.</p>
 
+            <hr>
+
+            <h2>➡️ arrow functions</h2>
+            <p>arrow functions are a shorter syntax for writing functions, introduced in ES6.</p>
+            <pre><code>// traditional function
+function add(a, b) { return a + b; }
+
+// arrow function
+const add = (a, b) =&gt; a + b;
+
+// with a body (needs explicit return)
+const multiply = (a, b) =&gt; {
+  const result = a * b;
+  return result;
+};
+
+// single parameter (no parentheses needed)
+const double = x =&gt; x * 2;</code></pre>
+            <h3>key differences from regular functions:</h3>
+            <ul>
+                <li><strong>no own <code>this</code></strong> — inherits from surrounding scope</li>
+                <li><strong>cannot be used as constructors</strong> — no <code>new</code></li>
+                <li><strong>no <code>arguments</code> object</strong> — use rest parameters</li>
+            </ul>
+            <pre><code>const obj = {
+  name: "olga",
+  greetArrow: () =&gt; console.log(this.name), // ❌ undefined
+  greetRegular() { console.log(this.name); } // ✅ "olga"
+};</code></pre>
+
+            <hr>
+
+            <h2>🔓 object / array destructuring</h2>
+            <h3>object destructuring</h3>
+            <pre><code>const user = { name: "olga", age: 25, city: "berlin" };
+const { name, age, city } = user;
+
+// renaming
+const { name: userName, age: userAge } = user;
+
+// default values
+const { name, country = "unknown" } = user;</code></pre>
+            <h3>array destructuring</h3>
+            <pre><code>const colors = ["red", "green", "blue"];
+const [first, second, third] = colors;
+const [, , last] = colors; // skip values
+const [head, ...rest] = colors; // rest</code></pre>
+            <h3>in function parameters (very common in react)</h3>
+            <pre><code>function greet({ name, age }) {
+  console.log(name);
+}</code></pre>
+
+            <hr>
+
+            <h2>🌊 spread operator (...)</h2>
+            <h3>with arrays</h3>
+            <pre><code>const a = [1, 2, 3];
+const b = [4, 5, 6];
+const combined = [...a, ...b]; // [1, 2, 3, 4, 5, 6]
+const copy = [...a]; // shallow copy</code></pre>
+            <h3>with objects</h3>
+            <pre><code>const user = { name: "olga", age: 25 };
+const updated = { ...user, age: 26 };
+// { name: "olga", age: 26 }</code></pre>
+            <h3>rest parameters</h3>
+            <pre><code>function sum(...numbers) {
+  return numbers.reduce((acc, n) =&gt; acc + n, 0);
+}
+sum(1, 2, 3, 4); // 10</code></pre>
+
+            <hr>
+
+            <h2>📦 modules (import / export)</h2>
+            <h3>named exports</h3>
+            <pre><code>// utils.js
+export const PI = 3.14;
+export function add(a, b) { return a + b; }
+
+// main.js
+import { PI, add } from './utils.js';</code></pre>
+            <h3>default exports</h3>
+            <pre><code>export default function log(msg) { console.log(msg); }
+import log from './logger.js'; // can name it anything</code></pre>
+            <h3>ES modules vs CommonJS</h3>
+            <pre><code>// ES modules (modern, browser + node 14+)
+import { something } from './file.js';
+export const value = 42;
+
+// CommonJS (older, node.js traditional)
+const { something } = require('./file.js');
+module.exports = { value: 42 };</code></pre>
+            <ul>
+                <li><strong>ES modules</strong>: static imports, tree-shakeable, async loading</li>
+                <li><strong>CommonJS</strong>: dynamic imports, synchronous, no tree-shaking</li>
+            </ul>
+
+            <hr>
+
             <h2>📐 types, interfaces, generics (typescript)</h2>
 
             <h3>🧩 types</h3>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+    <title>REST Fundamentals & Integration | Software Engineering Interview Guide</title>
+    <link rel="stylesheet" href="assets/css/page-style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="project-name"><a href="index.html">Software Engineering Interview Guide</a></h1>
+            <p class="project-tagline">A friendly, no-bs place to refresh your brain before any technical interview</p>
+        </header>
+
+        <main class="main-content">
+            <h1>🔥 REST Fundamentals & Integration Mindset</h1>
+
+            <h2>HTTP methods</h2>
+            <h3>the main 5:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>method</th>
+                        <th>purpose</th>
+                        <th>has body?</th>
+                        <th>idempotent?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>GET</strong></td>
+                        <td>read/fetch data</td>
+                        <td>no</td>
+                        <td>yes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>POST</strong></td>
+                        <td>create new resource</td>
+                        <td>yes</td>
+                        <td>no</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PUT</strong></td>
+                        <td>replace entire resource</td>
+                        <td>yes</td>
+                        <td>yes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PATCH</strong></td>
+                        <td>update part of a resource</td>
+                        <td>yes</td>
+                        <td>yes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DELETE</strong></td>
+                        <td>remove a resource</td>
+                        <td>rarely</td>
+                        <td>yes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>examples:</h3>
+            <pre><code>GET    /api/users          → get all users
+GET    /api/users/123      → get user 123
+POST   /api/users          → create new user
+PUT    /api/users/123      → replace user 123 entirely
+PATCH  /api/users/123      → update user 123 partially
+DELETE /api/users/123      → delete user 123</code></pre>
+
+            <hr>
+
+            <h2>idempotency</h2>
+            <p>an operation is <strong>idempotent</strong> if calling it <strong>multiple times</strong> produces the <strong>same result</strong> as calling it once.</p>
+
+            <h3>why it matters:</h3>
+            <ul>
+                <li>network failures can cause duplicate requests</li>
+                <li>retries must be safe</li>
+                <li>idempotent operations can be safely retried</li>
+            </ul>
+
+            <h3>which methods are idempotent:</h3>
+            <ul>
+                <li><strong>GET</strong> — reading the same resource always returns the same thing</li>
+                <li><strong>PUT</strong> — replacing with the same data = same result</li>
+                <li><strong>DELETE</strong> — deleting something already deleted = still gone</li>
+                <li><strong>POST</strong> — <strong>NOT idempotent</strong> — creating twice = two resources</li>
+            </ul>
+
+            <h3>making POST idempotent:</h3>
+            <p>use an <strong>idempotency key</strong> — a unique identifier sent with the request:</p>
+            <pre><code>const response = await fetch("/api/payments", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Idempotency-Key": "unique-request-id-12345",
+  },
+  body: JSON.stringify({ amount: 100, currency: "USD" }),
+});
+// if this request is sent twice with the same key,
+// the server processes it only once</code></pre>
+
+            <hr>
+
+            <h2>pagination</h2>
+            <p>when an API has a lot of data, it returns results in <strong>pages</strong> instead of all at once.</p>
+
+            <h3>offset-based pagination (most common)</h3>
+            <pre><code>GET /api/users?page=1&amp;limit=20     → users 1-20
+GET /api/users?page=2&amp;limit=20     → users 21-40
+GET /api/users?offset=0&amp;limit=20   → same as page 1</code></pre>
+
+            <h3>cursor-based pagination (better for large datasets)</h3>
+            <pre><code>GET /api/users?limit=20                        → first 20
+GET /api/users?limit=20&amp;cursor=abc123          → next 20 after cursor</code></pre>
+
+            <h3>typical paginated response:</h3>
+            <pre><code>{
+  "data": [...],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 150,
+    "hasMore": true,
+    "nextCursor": "abc123"
+  }
+}</code></pre>
+
+            <h3>fetching all pages:</h3>
+            <pre><code>async function fetchAllPages(baseUrl) {
+  const allData = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    const res = await fetch(`${baseUrl}?page=${page}&amp;limit=100`);
+    const json = await res.json();
+    allData.push(...json.data);
+    hasMore = json.pagination.hasMore;
+    page++;
+  }
+
+  return allData;
+}</code></pre>
+
+            <hr>
+
+            <h2>rate limiting</h2>
+            <p>APIs limit how many requests you can make in a given time period.</p>
+
+            <h3>common headers:</h3>
+            <pre><code>X-RateLimit-Limit: 100          → max requests per window
+X-RateLimit-Remaining: 42       → requests left
+X-RateLimit-Reset: 1234567890   → when the window resets (unix timestamp)
+Retry-After: 30                 → seconds to wait (when rate limited)</code></pre>
+
+            <h3>handling rate limits:</h3>
+            <pre><code>async function fetchWithRateLimit(url) {
+  const res = await fetch(url);
+
+  if (res.status === 429) {
+    const retryAfter = res.headers.get("Retry-After") || "5";
+    const waitMs = parseInt(retryAfter) * 1000;
+    console.log(`rate limited — waiting ${waitMs}ms`);
+    await new Promise(resolve =&gt; setTimeout(resolve, waitMs));
+    return fetchWithRateLimit(url); // retry
+  }
+
+  return res.json();
+}</code></pre>
+
+            <hr>
+
+            <h2>webhooks</h2>
+            <p>a webhook is when an <strong>external service calls YOUR API</strong> to notify you of an event.</p>
+            <p>instead of polling (asking "anything new?" every 5 seconds), the service tells you when something happens.</p>
+
+            <h3>how it works:</h3>
+            <pre><code>1. you register a webhook URL with the service
+   → "send events to https://myapp.com/webhooks/stripe"
+
+2. when an event happens (e.g. payment received):
+   → stripe sends a POST request to your URL
+
+3. your server processes the event</code></pre>
+
+            <h3>handling webhooks in express:</h3>
+            <pre><code>app.post("/webhooks/stripe", (req, res) =&gt; {
+  const event = req.body;
+
+  switch (event.type) {
+    case "payment_intent.succeeded":
+      console.log("payment received:", event.data);
+      break;
+    case "customer.created":
+      console.log("new customer:", event.data);
+      break;
+  }
+
+  // always respond with 200 to acknowledge receipt
+  res.status(200).json({ received: true });
+});</code></pre>
+
+            <h3>webhook best practices:</h3>
+            <ul>
+                <li><strong>always return 200 quickly</strong> — process heavy work async</li>
+                <li><strong>verify signatures</strong> — make sure the request is actually from the service</li>
+                <li><strong>handle duplicates</strong> — webhooks can be sent more than once</li>
+                <li><strong>log everything</strong> — for debugging</li>
+            </ul>
+
+            <hr>
+
+            <h2>data mapping / transformation</h2>
+            <p>when integrating with external APIs, the data shape often doesn't match what you need.</p>
+
+            <h3>example: transforming API response</h3>
+            <pre><code>// external API returns:
+const apiUser = {
+  first_name: "Olga",
+  last_name: "Nedelcu",
+  email_address: "olga@test.com",
+  created_at: "2024-01-15T10:00:00Z",
+};
+
+// your app expects:
+function mapUser(external) {
+  return {
+    firstName: external.first_name,
+    lastName: external.last_name,
+    email: external.email_address,
+    createdAt: new Date(external.created_at),
+    fullName: `${external.first_name} ${external.last_name}`,
+  };
+}
+
+const user = mapUser(apiUser);</code></pre>
+
+            <h3>mapping arrays</h3>
+            <pre><code>const apiUsers = await fetchUsers();
+const users = apiUsers.map(mapUser);</code></pre>
+
+            <h3>handling missing/optional fields</h3>
+            <pre><code>function mapUser(external) {
+  return {
+    name: external.name ?? "unknown",
+    email: external.email ?? null,
+    age: external.age != null ? Number(external.age) : null,
+    roles: external.roles ?? [],
+  };
+}</code></pre>
+
+            <hr>
+
+            <h2>schema validation</h2>
+            <p>before trusting data from an external source, <strong>validate it</strong>.</p>
+
+            <h3>why validate:</h3>
+            <ul>
+                <li>external APIs can change without warning</li>
+                <li>data can be malformed, missing fields, wrong types</li>
+                <li>prevents runtime crashes deep in your code</li>
+            </ul>
+
+            <h3>manual validation</h3>
+            <pre><code>function validateUser(data) {
+  if (!data || typeof data !== "object") {
+    throw new Error("invalid user data");
+  }
+  if (typeof data.name !== "string") {
+    throw new Error("name must be a string");
+  }
+  if (typeof data.email !== "string" || !data.email.includes("@")) {
+    throw new Error("invalid email");
+  }
+  return data;
+}</code></pre>
+
+            <h3>with zod (popular validation library)</h3>
+            <pre><code>import { z } from "zod";
+
+const UserSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  age: z.number().optional(),
+});
+
+// validate
+const result = UserSchema.safeParse(apiResponse);
+
+if (result.success) {
+  const user = result.data; // fully typed!
+} else {
+  console.log("validation errors:", result.error.issues);
+}</code></pre>
+            <p>zod is extremely common in typescript codebases because it gives you <strong>runtime validation + type inference</strong> in one tool.</p>
+
+            <hr>
+
+            <h2>summary checklist</h2>
+            <ul>
+                <li>know all HTTP methods and when to use each</li>
+                <li>understand idempotency and why it matters</li>
+                <li>know how to handle paginated APIs</li>
+                <li>understand rate limiting and how to handle 429 responses</li>
+                <li>know what webhooks are and how to handle them</li>
+                <li>can transform/map data between different API shapes</li>
+                <li>understand why schema validation matters</li>
+                <li>comfortable with auth patterns (bearer tokens, API keys)</li>
+            </ul>
+        </main>
+
+        <footer>
+            <p><a href="index.html">&larr; Back to Home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
